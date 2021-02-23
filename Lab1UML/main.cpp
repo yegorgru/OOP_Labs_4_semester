@@ -1,8 +1,11 @@
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include "doctest.h"
 #include "GameModel.h"
+#include "GameController.h"
+#include "GameRender.h"
 
 #include <random>
+
+#define DOCTEST_CONFIG_IMPLEMENT
+#include "doctest.h"
 
 std::random_device rd;
 std::mt19937 mersenne(rd());
@@ -54,13 +57,13 @@ TEST_CASE("testing GameModel") {
             model.next_turn();
 
             REQUIRE(!model.is_red_turn());
-            
+
             model.set_blue_position(4, 0);
             CHECK(!model.make_move(2));
             CHECK(model.make_move(3));
 
             model.next_turn();
-            
+
             REQUIRE(model.is_red_turn());
 
             model.set_red_position(7, 4);
@@ -75,7 +78,7 @@ TEST_CASE("testing GameModel") {
             CHECK(!model.make_move(3));
             CHECK(model.make_move(2));
 
-            model.next_turn();       
+            model.next_turn();
         }
         SUBCASE("testing block occupancy with allies") {
             REQUIRE(model.is_red_turn());
@@ -265,4 +268,18 @@ TEST_CASE("testing GameModel") {
             }
         }
     }
+}
+
+int main(){
+
+
+    doctest::Context context;
+
+    int res = context.run();
+
+	GameModel game;
+	GameRender render(game);
+	GameController controller(game, render);
+	controller.Run();
+	return 0;
 }

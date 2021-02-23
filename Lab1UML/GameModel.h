@@ -7,6 +7,11 @@
 class GameModel
 {
 public:
+	struct position {
+		int x;
+		int y;
+	};
+
 	GameModel();
 
 	void restore();
@@ -43,15 +48,15 @@ private:
 
 	bool is_correct_move(int direction);
 
-	struct position {
-		int x;
-		int y;
-	};
-
 	bool red_turn;
 	position cur_red_position;
 	position cur_blue_position;
 	std::array<std::array<int,8>,8> gridView;
 	int winner;
+
+	friend bool operator==(const GameModel& left, const GameModel& right);
 };
 
+bool operator==(const GameModel::position& left, const GameModel::position& right);
+
+bool operator==(const GameModel& left, const GameModel& right);

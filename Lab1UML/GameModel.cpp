@@ -334,3 +334,15 @@ bool GameModel::is_correct_move(int direction)
 	}
 	return false;
 }
+
+bool operator==(const GameModel::position& left, const GameModel::position& right) {
+	return left.x == right.x && left.y == right.y;
+}
+
+bool operator==(const GameModel& left, const GameModel& right) {
+	return left.red_turn == right.red_turn &&
+		left.cur_red_position == right.cur_red_position &&
+		left.cur_blue_position == right.cur_blue_position &&
+		left.gridView == right.gridView &&
+		left.winner == right.winner;
+}
