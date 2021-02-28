@@ -1,0 +1,382 @@
+#include "Game.h"
+
+namespace Docking::Server {
+    Game::Game(sf::SocketSelector& selector) :
+        m_NetworkManager(selector),
+        m_CurrentPlayer(0),
+		m_Position{-1,-1},
+		m_Winner(0){
+        for (size_t i = 0; i < 8; i++) {
+            for (size_t j = 0; j < 8; j++)
+            {
+                if ((i == 0 || i == 7) && j > 1 && j < 6) {
+                    m_Map[i][j] = 1;
+                }
+                else if ((j == 0 || j == 7) && i > 1 && i < 6) {
+                    m_Map[i][j] = 2;
+                }
+                else {
+                    m_Map[i][j] = 0;
+                }
+            }
+        }
+    }
+
+    Game::~Game() {
+        
+    }
+
+    void Game::ConnectPlayer(sf::TcpSocket& socket) {
+        m_Players.emplace_back(m_Players.size()+1);
+		m_NetworkManager.ConnectPlayer(m_Players.size(), socket);
+    }
+
+    void Game::RunNetwork() {
+        if (!IsActive()) return;
+        for (auto& player : m_Players)
+        {
+            if (m_NetworkManager.IsReady(player.GetId()))
+            {
+                sf::Packet received;
+                if (m_NetworkManager.Receive(player.GetId(), received))
+                {
+                    int code;
+                    received >> code;
+                    auto clientCode = static_cast<ClientCode>(code);
+					sf::Packet answer;
+					Position lastPosition = m_Position;
+					bool success = false;
+                    if (m_CurrentPlayer == player.GetId()) {
+                        switch (clientCode) {
+						case ClientCode::ClosedGame: {
+							EndGame(player.GetId()==1?2:1);
+							answer << static_cast<int>(ServerCode::EndGame) << m_Winner;
+							m_NetworkManager.Send(answer, player.GetId() == 1 ? 2 : 1);
+							break;
+						}
+						case ClientCode::Position: {
+							received >> m_Position.x >> m_Position.y;
+							break;
+						}
+						case ClientCode::Left: {
+							success = MakeMove(0);
+							break;
+						}
+						case ClientCode::Right: {
+							success = MakeMove(1);
+							break;
+						}
+						case ClientCode::Up: {
+							success = MakeMove(2);
+							break;
+						}
+						case ClientCode::Down: {
+							success = MakeMove(3);
+							break;
+						}
+						}
+						if (success) {
+							answer << static_cast<int>(ServerCode::SetPosition) <<
+								player.GetId() <<
+								m_Position.x << m_Position.y
+								<< lastPosition.x << lastPosition.y;
+							m_NetworkManager.Send(answer);
+							NextTurn();
+							SetPosition(-1, -1);
+							if (!IsActive()) {
+								sf::Packet packet;
+								packet << static_cast<int>(ServerCode::EndGame) << m_Winner;
+								m_NetworkManager.Send(packet);
+							}
+						}
+					}
+                }
+            }
+        }
+    }
+
+	bool Game::CurrentPlayer() const {
+		return m_CurrentPlayer;
+	}
+
+	int Game::GetElement(int x, int y) const {
+		return m_Map[x][y];
+	}
+
+	Game::Position Game::GetPosition() const {
+		return m_Position;
+	}
+
+	void Game::SetPosition(int x, int y) {
+		m_Position = { x,y };
+	}
+
+	int Game::GetWinner() const	{
+		return m_Winner;
+	}
+
+	void Game::NextTurn()
+	{
+		m_CurrentPlayer = m_CurrentPlayer == 1 ? 2 : 1;
+	}
+
+	bool Game::MakeMove(int direction)
+	{
+		if (!IsCorrectMove(direction)) {
+			return false;
+		}
+		int enemy, ally;
+		if (m_CurrentPlayer==1) {
+			ally = 1;
+			enemy = 2;
+		}
+		else {
+			ally = 2;
+			enemy = 1;
+		}
+		Position pos = GetPosition();
+		int new_pos_x = pos.x, new_pos_y = pos.y;
+		if (direction == 0) {
+			int counter = 0;
+			int copy_pos_x = pos.x;
+			while (copy_pos_x >= 0) {
+				if (m_Map[copy_pos_x][pos.y]) {
+					counter++;
+				}
+				copy_pos_x--;
+			}
+			copy_pos_x = pos.x;
+			while (counter > 0) {
+				if (copy_pos_x == -1 || m_Map[copy_pos_x][pos.y] == enemy) {
+					counter = 0;
+				}
+				else if (m_Map[copy_pos_x][pos.y] == 0) {
+					new_pos_x = copy_pos_x;
+					counter--;
+				}
+				copy_pos_x--;
+			}
+		}
+		else if (direction == 1) {
+			int counter = 0;
+			int copy_pos_x = pos.x;
+			while (copy_pos_x <= 7) {
+				if (m_Map[copy_pos_x][pos.y]) {
+					counter++;
+				}
+				copy_pos_x++;
+			}
+			copy_pos_x = pos.x;
+			while (counter > 0) {
+				if (copy_pos_x == 8 || m_Map[copy_pos_x][pos.y] == enemy) {
+					counter = 0;
+				}
+				else if (m_Map[copy_pos_x][pos.y] == 0) {
+					new_pos_x = copy_pos_x;
+					counter--;
+				}
+				copy_pos_x++;
+			}
+		}
+		else if (direction == 2) {
+			int counter = 0;
+			int copy_pos_y = pos.y;
+			while (copy_pos_y >= 0) {
+				if (m_Map[pos.x][copy_pos_y]) {
+					counter++;
+				}
+				copy_pos_y--;
+			}
+			copy_pos_y = pos.y;
+			while (counter > 0) {
+				if (copy_pos_y == -1 || m_Map[pos.x][copy_pos_y] == enemy) {
+					counter = 0;
+				}
+				else if (m_Map[pos.x][copy_pos_y] == 0) {
+					new_pos_y = copy_pos_y;
+					counter--;
+				}
+				copy_pos_y--;
+			}
+		}
+		else if (direction == 3) {
+			int counter = 0;
+			int copy_pos_y = pos.y;
+			while (copy_pos_y <= 7) {
+				if (m_Map[pos.x][copy_pos_y]) {
+					counter++;
+				}
+				copy_pos_y++;
+			}
+			copy_pos_y = pos.y;
+			while (counter > 0) {
+				if (copy_pos_y == 8 || m_Map[pos.x][copy_pos_y] == enemy) {
+					counter = 0;
+				}
+				else if (m_Map[pos.x][copy_pos_y] == 0) {
+					new_pos_y = copy_pos_y;
+					counter--;
+				}
+				copy_pos_y++;
+			}
+		}
+		if (pos.x != new_pos_x) {
+			m_Map[pos.x][pos.y] = 0;
+			m_Map[new_pos_x][pos.y] = m_CurrentPlayer;
+			CheckClosed({ new_pos_x - 1, pos.y });
+			CheckClosed({new_pos_x + 1, pos.y});
+			CheckClosed({ new_pos_x, pos.y - 1 });
+			CheckClosed({ new_pos_x, pos.y + 1 });
+			IsEnd();
+			m_Position.x = new_pos_x;
+			return true;
+		}
+		if (pos.y != new_pos_y) {
+			m_Map[pos.x][pos.y] = 0;
+			m_Map[pos.x][new_pos_y] = m_CurrentPlayer;
+			CheckClosed({ pos.x - 1, new_pos_y });
+			CheckClosed({ pos.x + 1, new_pos_y });
+			CheckClosed({ pos.x, new_pos_y - 1 });
+			CheckClosed({ pos.x, new_pos_y + 1 });
+			IsEnd();
+			m_Position.y = new_pos_y;
+			return true;
+		}
+		return false;
+	}
+
+	bool Game::IsEnd() {
+		if (m_Winner) {
+			return m_Winner;
+		}
+		std::set<std::pair<int, int>>elements;
+		for (size_t i = 0; i < 8; i++) {
+			for (size_t j = 0; j < 8; j++) {
+				if (m_Map[i][j] == 1) {
+					elements.insert({ i,j });
+					CheckElements({ int(i), int(j) }, 1, elements);
+					if (elements.size() == 8) {
+						m_Winner = 1;
+						return 1;
+					}
+					else {
+						elements.clear();
+						break;
+					}
+				}
+			}
+		}
+		for (size_t i = 0; i < 8; i++) {
+			for (size_t j = 0; j < 8; j++) {
+				if (m_Map[i][j] == 2) {
+					elements.insert({ i,j });
+					CheckElements({ int(i), int(j) }, 2, elements);
+					if (elements.size() == 8) {
+						m_Winner = 2;
+						return 1;
+					}
+					else {
+						return 0;
+					}
+				}
+			}
+		}
+		return 0;
+	}
+
+	bool Game::IsActive() const {
+		return IsCompleted() && !m_Winner;
+	}
+
+	void Game::EndGame(int winner) {
+		m_Winner = winner;
+	}
+
+	bool Game::IsCompleted() const {
+		return m_Players.size() == 2;
+	}
+
+	void Game::CheckElements(Position pos, int el, std::set<std::pair<int, int>>& elements)
+	{
+		if (pos.x - 1 >= 0 && m_Map[pos.x - 1][pos.y] == el && !elements.count({ pos.x - 1, pos.y })) {
+			elements.insert({ pos.x - 1,pos.y });
+			CheckElements({pos.x-1, pos.y}, el, elements);
+		}
+		if (pos.x + 1 <= 7 && m_Map[pos.x + 1][pos.y] == el && !elements.count({ pos.x + 1, pos.y })) {
+			elements.insert({ pos.x + 1, pos.y });
+			CheckElements({pos.x+1, pos.y}, el, elements);
+		}
+		if (pos.y - 1 >= 0 && m_Map[pos.x][pos.y - 1] == el && !elements.count({ pos.x, pos.y - 1 })) {
+			elements.insert({ pos.x, pos.y - 1 });
+			CheckElements({ pos.x, pos.y - 1 }, el, elements);
+		}
+		if (pos.y + 1 <= 7 && m_Map[pos.x][pos.y + 1] == el && !elements.count({ pos.x, pos.y + 1 })) {
+			elements.insert({ pos.x, pos.y + 1 });
+			CheckElements({ pos.x, pos.y + 1 }, el, elements);
+		}
+	}
+
+	void Game::StartGame() {
+		sf::Packet first;
+		first << static_cast<int>(ServerCode::StartGame) << 1;
+		m_NetworkManager.Send(first, 1);
+		sf::Packet second;
+		second << static_cast<int>(ServerCode::StartGame) << 2;
+		m_NetworkManager.Send(second, 2);
+		m_CurrentPlayer = 1;
+	}
+
+	bool Game::CheckClosed(Position pos) {
+		if (pos.x >= 0 && pos.x <= 7 && pos.y >= 0 && pos.y <= 7 && m_Map[pos.x][pos.y]) {
+			int enemy = m_Map[pos.x][pos.y] == 1 ? 2 : 1;
+			if (pos.x - 1 >= 0 && m_Map[pos.x - 1][pos.y] != enemy) {
+				return false;
+			}
+			if (pos.x + 1 <= 7 && m_Map[pos.x + 1][pos.y] != enemy) {
+				return false;
+			}
+			if (pos.y - 1 >= 0 && m_Map[pos.x][pos.y - 1] != enemy) {
+				return false;
+			}
+			if (pos.y + 1 <= 7 && m_Map[pos.x][pos.y + 1] != enemy) {
+				return false;
+			}
+			this->m_Winner = enemy;
+			return true;
+		}
+		return false;
+	}
+
+	bool Game::IsCorrectMove(int direction)
+	{
+		if (!m_CurrentPlayer && m_Position.x != -1) {
+			if (direction == 0 && m_Position.x > 0) {
+				return true;
+			}
+			if (direction == 1 && m_Position.x < 7) {
+				return true;
+			}
+			if (direction == 2 && m_Position.y > 0) {
+				return true;
+			}
+			if (direction == 3 && m_Position.y < 7) {
+				return true;
+			}
+		}
+		if (m_CurrentPlayer && m_Position.x != -1) {
+			if (direction == 0 && m_Position.x > 0) {
+				return true;
+			}
+			if (direction == 1 && m_Position.x < 7) {
+				return true;
+			}
+			if (direction == 2 && m_Position.y > 0) {
+				return true;
+			}
+			if (direction == 3 && m_Position.y < 7) {
+				return true;
+			}
+		}
+		return false;
+	}
+}

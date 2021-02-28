@@ -1,16 +1,16 @@
 #include "GameModel.h"
-#include "GameController.h"
+#include "ClientController.h"
 #include "GameRender.h"
 
 #include <random>
 
-#define DOCTEST_CONFIG_IMPLEMENT
-#include "doctest.h"
+//#define DOCTEST_CONFIG_IMPLEMENT
+//#include "doctest.h"
 
 std::random_device rd;
 std::mt19937 mersenne(rd());
 
-TEST_CASE("testing GameModel") {
+/*TEST_CASE("testing GameModel") {
     GameModel model;
     SUBCASE("testing constructor") {
         CHECK(model.get_winner() == 0);
@@ -268,18 +268,10 @@ TEST_CASE("testing GameModel") {
             }
         }
     }
-}
+}*/
 
 int main(){
-
-
-    doctest::Context context;
-
-    int res = context.run();
-
-	GameModel game;
-	GameRender render(game);
-	GameController controller(game, render);
+    Docking::Client::ClientController controller;
 	controller.Run();
 	return 0;
 }
