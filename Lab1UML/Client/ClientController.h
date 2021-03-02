@@ -4,6 +4,7 @@
 #include "GameModel.h"
 #include "GameController.h"
 #include "MenuController.h"
+#include "Player.h"
 
 namespace Docking::Client {
 	class ClientController
@@ -12,5 +13,7 @@ namespace Docking::Client {
 		ClientController();
 		void Run();
 	private:
+		NetworkManager m_NetworkManager;
+		Player m_Player;
 	};
 }

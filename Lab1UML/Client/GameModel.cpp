@@ -1,10 +1,13 @@
 #include "GameModel.h"
 
 namespace Docking::Client {
-	GameModel::GameModel() {}
+	GameModel::GameModel():
+		m_Map(),
+		m_Winner(){}
 
 	void GameModel::Restore()
 	{
+		m_Winner = 0;
 		for (size_t i = 0; i < 8; i++) {
 			for (size_t j = 0; j < 8; j++)
 			{
@@ -39,6 +42,15 @@ namespace Docking::Client {
 
 	int GameModel::GetWinner() {
 		return m_Winner;
+	}
+
+	void GameModel::AddPlayer(const Player& player) {
+		m_Players.push_back(player);
+	}
+
+	std::vector<Player>& GameModel::GetPlayers()
+	{
+		return m_Players;
 	}
 
 	bool operator==(const GameModel::Position& left, const GameModel::Position& right) {

@@ -14,7 +14,7 @@ namespace Docking::Client {
 		sf::RectangleShape m_Rectangle;
 
 		sf::Text m_TextPlay;
-		sf::Text m_TextAchievements;
+		sf::Text m_TextLeaders;
 		sf::Text m_TextExit;
 
 		sf::Font font;

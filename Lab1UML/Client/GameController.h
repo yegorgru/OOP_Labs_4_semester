@@ -9,31 +9,16 @@ namespace Docking::Client {
 	class GameController
 	{
 	public:
-		enum class ClientCode : int {
-			ClosedGame = 0,
-			Position,
-			Up,
-			Down,
-			Left,
-			Right
-		};
-
-		enum class ServerCode : int {
-			StartGame = 0,
-			EndGame,
-			SetPosition,
-		};
-
-		GameController(GameModel& game, GameRender& render);
+		GameController(GameModel& game, GameRender& render, NetworkManager& network);
 		Code Run();
-
+		void Restore();
 	private:
 		GameModel& m_Model;
 		GameRender& m_Render;
 
-		NetworkManager m_NetworkManager;
+		NetworkManager& m_NetworkManager;
 
-		bool m_IsActive;
+		bool m_IsEnd;
 		bool m_MyTurn;
 	};
 }

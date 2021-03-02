@@ -3,6 +3,9 @@
 #include <set>
 #include <utility>
 #include <array>
+#include <vector>
+
+#include "Player.h"
 
 namespace Docking::Client {
 	class GameModel
@@ -22,9 +25,13 @@ namespace Docking::Client {
 
 		int GetElement(Position pos);
 		int GetWinner();
+
+		void AddPlayer(const Player& player);
+		std::vector<Player>& GetPlayers();
 	private:
 		std::array<std::array<int, 8>, 8> m_Map;
 		int m_Winner;
+		std::vector<Player>m_Players;
 	};
 
 	bool operator==(const GameModel::Position& left, const GameModel::Position& right);

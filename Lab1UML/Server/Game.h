@@ -3,12 +3,13 @@
 #include <array>
 #include <unordered_map>
 #include <set>
+#include <stdexcept>
 
 #include "NetworkManager.h"
 #include "Player.h"
+#include "EnumCode.h"
 
 namespace Docking::Server {
-
     class Game {
     public:
         struct Position {
@@ -16,27 +17,12 @@ namespace Docking::Server {
             int y;
         };
 
-        enum class ClientCode : int {
-            ClosedGame = 0,
-            Position,
-            Up,
-            Down,
-            Left,
-            Right
-        };
-
-        enum class ServerCode : int {
-            StartGame = 0,
-            EndGame,
-            SetPosition,
-        };
-
-        Game(sf::SocketSelector& selector);
+        Game(NetworkManager<int>& network);
 
         virtual ~Game() noexcept;
 
-        void ConnectPlayer(sf::TcpSocket& socket);
-        void RunNetwork();
+        void ConnectPlayer(Player& player);
+        void RunNetwork(sf::Packet received, ClientCode clientCode, int playerId);
 
         bool CurrentPlayer() const;
 
@@ -61,6 +47,10 @@ namespace Docking::Server {
         void StartGame();
 
         void EndGame(int winner);
+
+        int AnotherPlayerId(int id);
+
+        void Clear();
     private:
 
         void CheckElements(Position pos, int el, std::set<std::pair<int, int>>& elements);
@@ -69,13 +59,16 @@ namespace Docking::Server {
 
         bool IsCorrectMove(int direction);
 
-        std::vector<Player> m_Players;
+        std::vector<Player*> m_Players;
         int m_CurrentPlayer;
         int m_Winner;
 
         std::array<std::array<int, 8>, 8> m_Map;
         Position m_Position;
 
-        NetworkManager<int> m_NetworkManager;
+        NetworkManager<int>& m_NetworkManager;
+
+        std::unordered_map<int, int>m_IdElement;
+        std::unordered_map<int, int>m_ElementId;
     };
 }

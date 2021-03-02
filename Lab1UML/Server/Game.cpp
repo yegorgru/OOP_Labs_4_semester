@@ -1,8 +1,8 @@
 #include "Game.h"
 
 namespace Docking::Server {
-    Game::Game(sf::SocketSelector& selector) :
-        m_NetworkManager(selector),
+    Game::Game(NetworkManager<int>& network) :
+        m_NetworkManager(network),
         m_CurrentPlayer(0),
 		m_Position{-1,-1},
 		m_Winner(0){
@@ -26,73 +26,77 @@ namespace Docking::Server {
         
     }
 
-    void Game::ConnectPlayer(sf::TcpSocket& socket) {
-        m_Players.emplace_back(m_Players.size()+1);
-		m_NetworkManager.ConnectPlayer(m_Players.size(), socket);
+    void Game::ConnectPlayer(Player& player) {
+		if (m_Players.size() == 0) {
+			m_ElementId[1] = player.GetId();
+			m_IdElement[player.GetId()] = 1;
+		}
+		else {
+			m_ElementId[2] = player.GetId();
+			m_IdElement[player.GetId()] = 2;
+		}
+		m_Players.push_back(&player);
     }
 
-    void Game::RunNetwork() {
-        if (!IsActive()) return;
-        for (auto& player : m_Players)
-        {
-            if (m_NetworkManager.IsReady(player.GetId()))
-            {
-                sf::Packet received;
-                if (m_NetworkManager.Receive(player.GetId(), received))
-                {
-                    int code;
-                    received >> code;
-                    auto clientCode = static_cast<ClientCode>(code);
-					sf::Packet answer;
-					Position lastPosition = m_Position;
-					bool success = false;
-                    if (m_CurrentPlayer == player.GetId()) {
-                        switch (clientCode) {
-						case ClientCode::ClosedGame: {
-							EndGame(player.GetId()==1?2:1);
-							answer << static_cast<int>(ServerCode::EndGame) << m_Winner;
-							m_NetworkManager.Send(answer, player.GetId() == 1 ? 2 : 1);
-							break;
-						}
-						case ClientCode::Position: {
-							received >> m_Position.x >> m_Position.y;
-							break;
-						}
-						case ClientCode::Left: {
-							success = MakeMove(0);
-							break;
-						}
-						case ClientCode::Right: {
-							success = MakeMove(1);
-							break;
-						}
-						case ClientCode::Up: {
-							success = MakeMove(2);
-							break;
-						}
-						case ClientCode::Down: {
-							success = MakeMove(3);
-							break;
-						}
-						}
-						if (success) {
-							answer << static_cast<int>(ServerCode::SetPosition) <<
-								player.GetId() <<
-								m_Position.x << m_Position.y
-								<< lastPosition.x << lastPosition.y;
-							m_NetworkManager.Send(answer);
-							NextTurn();
-							SetPosition(-1, -1);
-							if (!IsActive()) {
-								sf::Packet packet;
-								packet << static_cast<int>(ServerCode::EndGame) << m_Winner;
-								m_NetworkManager.Send(packet);
-							}
-						}
-					}
-                }
-            }
-        }
+    void Game::RunNetwork(sf::Packet received, ClientCode clientCode, int playerId) {
+        if (!IsActive()) throw std::invalid_argument("Not active game");
+		sf::Packet answer;
+		if (clientCode == ClientCode::ClosedWindow || clientCode == ClientCode::ClosedGame) {
+			if (m_Players.size() == 2) {
+				EndGame(m_IdElement.at(AnotherPlayerId(playerId)));
+				answer << static_cast<int>(ServerCode::EndGame) << m_Winner;
+				m_NetworkManager.Send(answer, AnotherPlayerId(playerId));
+				m_Players[m_IdElement[AnotherPlayerId(playerId)]-1]->SetGame(-1);
+			}
+			else {
+				EndGame(0);
+			}
+			return;
+		}
+
+		else if (m_IdElement.at(playerId) != m_CurrentPlayer) return;
+		Position lastPosition = m_Position;
+		bool success = false;
+		switch (clientCode) {
+		case ClientCode::Position: {
+			received >> m_Position.x >> m_Position.y;
+			break;
+		}
+		case ClientCode::Left: {
+			success = MakeMove(0);
+			break;
+		}
+		case ClientCode::Right: {
+			success = MakeMove(1);
+			break;
+		}
+		case ClientCode::Up: {
+			success = MakeMove(2);
+			break;
+		}
+		case ClientCode::Down: {
+			success = MakeMove(3);
+			break;
+		}
+		}
+		if (success) {
+			answer << static_cast<int>(ServerCode::SetPosition) <<
+				m_IdElement.at(playerId) <<
+				m_Position.x << m_Position.y << lastPosition.x << lastPosition.y;
+			m_NetworkManager.Send(answer,m_Players[0]->GetId());
+			m_NetworkManager.Send(answer, m_Players[1]->GetId());
+			NextTurn();
+			SetPosition(-1, -1);
+			if (!IsActive()) {
+				EndGame(m_IdElement.at(playerId));
+				sf::Packet packet;
+				packet << static_cast<int>(ServerCode::EndGame) << m_Winner;
+				m_NetworkManager.Send(packet, m_Players[0]->GetId());
+				m_NetworkManager.Send(packet, m_Players[1]->GetId());
+				m_Players[0]->SetGame(-1);
+				m_Players[1]->SetGame(-1);
+			}
+		}
     }
 
 	bool Game::CurrentPlayer() const {
@@ -292,6 +296,22 @@ namespace Docking::Server {
 		m_Winner = winner;
 	}
 
+	int Game::AnotherPlayerId(int id)
+	{
+		for (auto& player : m_Players) {
+			if (player->GetId() != id) {
+				return player->GetId();
+			}
+		}
+		throw std::invalid_argument("Out of range");
+	}
+
+	void Game::Clear() {
+		m_Players.clear();
+		m_IdElement.clear();
+		m_ElementId.clear();
+	}
+
 	bool Game::IsCompleted() const {
 		return m_Players.size() == 2;
 	}
@@ -317,12 +337,12 @@ namespace Docking::Server {
 	}
 
 	void Game::StartGame() {
-		sf::Packet first;
-		first << static_cast<int>(ServerCode::StartGame) << 1;
-		m_NetworkManager.Send(first, 1);
-		sf::Packet second;
-		second << static_cast<int>(ServerCode::StartGame) << 2;
-		m_NetworkManager.Send(second, 2);
+		sf::Packet start;
+		start << static_cast<int>(ServerCode::StartGame) << 1
+			<< m_Players[0]->GetName() << m_Players[0]->GetWins() <<
+			2 << m_Players[1]->GetName() << m_Players[1]->GetWins();
+		m_NetworkManager.Send(start, m_Players[0]->GetId());
+		m_NetworkManager.Send(start, m_Players[1]->GetId());
 		m_CurrentPlayer = 1;
 	}
 

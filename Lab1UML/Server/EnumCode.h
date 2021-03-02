@@ -1,12 +1,6 @@
 #pragma once
 
-namespace Docking::Client {
-	enum class Code {
-		Exit = 0,
-		PlayGame,
-        Menu,
-        Leaders
-	};
+namespace Docking::Server {
     enum class ClientCode : int {
         ClosedWindow = 0,
         ClosedGame,
@@ -19,7 +13,7 @@ namespace Docking::Client {
         Logup,
         Game,
         FindPlayer,
-        Leaders,
+        Leaders
     };
 
     enum class ServerCode : int {

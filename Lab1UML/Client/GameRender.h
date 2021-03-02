@@ -14,6 +14,9 @@ namespace Docking::Client {
 
 		int get_element_size();
 
+		void SetEndText(const std::string& text);
+
+		void Restore();
 	private:
 		GameModel& m_GameModel;
 
@@ -21,12 +24,12 @@ namespace Docking::Client {
 
 		sf::RectangleShape m_Square;
 
-		//sf::Font font;
+		sf::Font m_Font;
 
-		//sf::Text up_text1;
-		//sf::Text up_text2;
-		//sf::Text red_won;
-		//sf::Text blue_won;
+		sf::Text m_TextPlayers;
+
+		sf::Text m_TextEnd;
+		sf::Text m_TextWaiting;
 		int w;
 	};
 }
