@@ -32,7 +32,7 @@ namespace Docking::Client {
 				playersStr += '.';
 			}
 			playersStr += ".........." + std::to_string(players[0].GetWins());
-			playersStr += "                                         ";
+			playersStr += "                                  ";
 			playersStr += std::to_string(players[1].GetWins()) + "..........";
 			for (size_t i = 0; i < 10 - players[1].GetName().size(); i++) {
 				playersStr += '.';

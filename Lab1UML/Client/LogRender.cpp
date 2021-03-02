@@ -1,6 +1,5 @@
 #include "LogRender.h"
 
-
 namespace Docking::Client {
 	LogRender::LogRender(sf::RenderWindow& window) :
 		m_Window(window),
@@ -84,9 +83,9 @@ namespace Docking::Client {
 			}
 		}
 		else {
-			std::string oldPassword = m_TextPassword.getString();
-			if (oldPassword.size() < 10) {
-				m_TextPassword.setString(oldPassword + letter);
+			if (m_Password.size() < 10) {
+				m_Password.push_back(letter);
+				m_TextPassword.setString(m_TextPassword.getString()+'*');
 			}
 		}
 	}
@@ -99,21 +98,21 @@ namespace Docking::Client {
 			m_TextName.setString(str);
 		}
 		else {
-			std::string str(m_TextPassword.getString());
-			if (str.size() > 0) {
-				str.resize(str.size() - 1);
+			if (m_Password.size() > 0) {
+				m_Password.resize(m_Password.size() - 1);
 			}
-			m_TextPassword.setString(str);
+			m_TextPassword.setString('*'*m_Password.size());
 		}
 	}
-	std::string LogRender::GetName()
-	{
+
+	std::string LogRender::GetName() {
 		return m_TextName.getString();
 	}
-	std::string LogRender::GetPassword()
-	{
-		return m_TextPassword.getString();
+
+	std::string LogRender::GetPassword() {
+		return m_Password;
 	}
+
 	void LogRender::IncorrectLog() {
 		m_RectangleName.setOutlineColor(sf::Color::Red);
 		m_RectanglePassword.setOutlineColor(sf::Color::Red);
@@ -121,6 +120,7 @@ namespace Docking::Client {
 		m_RectanglePassword.setOutlineThickness(5);
 		m_TextName.setString("");
 		m_TextPassword.setString("");
+		m_Password = "";
 		sf::Clock clock;
 		while (true) {
 			draw();

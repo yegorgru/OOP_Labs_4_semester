@@ -17,7 +17,7 @@ namespace Docking::Client {
 		GameRender gameRender(model, window);
 		GameController gameController(model, gameRender, m_NetworkManager);
 		MenuRender menuRender(window);
-		MenuController menuController(menuRender);
+		MenuController menuController(menuRender,m_NetworkManager);
 		LogRender logRender(window);
 		LogController logController(logRender, m_NetworkManager);
 		LeadersRender leadersRender(window);
@@ -27,6 +27,9 @@ namespace Docking::Client {
 		while (true) {
 			switch (code) {
 			case Code::Exit: {
+				sf::Packet closed;
+				closed << static_cast<int>(ClientCode::ClosedWindow);
+				m_NetworkManager.Send(closed);
 				window.close();
 				return;
 			}
@@ -42,6 +45,7 @@ namespace Docking::Client {
 				break;
 			}
 			case Code::Leaders: {
+				leadersRender.Restore();
 				leadersRender.SetPlayer(m_Player);
 				code = leadersController.Run();
 				break;

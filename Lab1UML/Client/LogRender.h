@@ -34,6 +34,8 @@ namespace Docking::Client {
 		sf::Font font;
 
 		bool m_Focus;
+
+		std::string m_Password;
 	};
 }
 

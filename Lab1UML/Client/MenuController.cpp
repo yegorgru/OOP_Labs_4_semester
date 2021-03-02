@@ -1,8 +1,9 @@
 #include "MenuController.h"
 
 namespace Docking::Client {
-	MenuController::MenuController(MenuRender& render):
-		m_Render(render) {}
+	MenuController::MenuController(MenuRender& render, NetworkManager& network):
+		m_Render(render),
+		m_NetworkManager(network) {}
 
 	Code MenuController::Run()
 	{

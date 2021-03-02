@@ -119,6 +119,13 @@ namespace Docking::Server {
 		return m_Winner;
 	}
 
+	std::string Game::GetWinnerName() const {
+		if (m_Winner) {
+			return m_Players[m_Winner-1]->GetName();
+		}
+		throw std::invalid_argument("There isn't winner");
+	}
+
 	void Game::NextTurn()
 	{
 		m_CurrentPlayer = m_CurrentPlayer == 1 ? 2 : 1;

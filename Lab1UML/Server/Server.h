@@ -8,6 +8,7 @@
 
 #include "Game.h"
 #include "Player.h"
+#include "PlayersStorage.h"
 
 namespace Docking::Server {
     class Server {
@@ -15,17 +16,12 @@ namespace Docking::Server {
         Server();
         virtual ~Server() noexcept = default;
 
-        bool logUpPlayer(const std::string& name, const std::string& password);
-        bool logInPlayer(const std::string& name, const std::string& password);
-        void FormLeaders(sf::Packet& packet);
         void Run();
     private:
         bool m_IsRunning;
 
-        std::unordered_map<std::string, std::string> m_PlayersStorage;
-        std::unordered_map<std::string, int>m_PlayersWins;
+        PlayersStorage m_PlayersStorage;
         std::unordered_map<int, Player>m_Players;
-        std::multimap<int, std::string>m_WinsPlayers;
         std::unordered_map<int, Game>m_Games;
        
         size_t m_UncompletedGame;

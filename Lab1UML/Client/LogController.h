@@ -14,6 +14,7 @@ namespace Docking::Client {
 	private:
 		LogRender& m_Render;
 		NetworkManager& m_NetworkManager;
+
 	};
 }
 

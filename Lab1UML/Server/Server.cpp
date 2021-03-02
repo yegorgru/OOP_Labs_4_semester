@@ -16,33 +16,6 @@ namespace Docking::Server {
         m_Games.emplace(0,Game(m_NetworkManager));
     }
 
-    bool Server::logUpPlayer(const std::string& name, const std::string& password) {
-        if (m_PlayersStorage.find(name) == m_PlayersStorage.end()) {
-            m_PlayersStorage[name] = password;
-            m_PlayersWins[name] = 0;
-            m_WinsPlayers.insert({ 0,name });
-            return true;
-        }
-        return false;
-    }
-
-    bool Server::logInPlayer(const std::string& name, const std::string& password) {
-        auto it = m_PlayersStorage.find(name);
-        if (it != m_PlayersStorage.end() && it->second == password) {
-            return true;
-        }
-
-        return false;
-    }
-    
-    void Server::FormLeaders(sf::Packet& packet)
-    {
-        int counter = 0;
-        for (auto it = m_WinsPlayers.rbegin(); counter < 10 && it != m_WinsPlayers.rend(); it++) {
-            packet << it->first << it->second;
-        }
-    }
-
     void Server::Run() {
         m_IsRunning = true;
 
@@ -87,13 +60,14 @@ namespace Docking::Server {
                             case ClientCode::Login: {
                                 std::string name, password;
                                 received >> name >> password;
-                                bool confirm = logInPlayer(name, password);
+                                bool confirm = m_PlayersStorage.LogIn(name, password);
                                 sf::Packet packet;
                                 if (confirm) {
                                     player->second.SetName(name);
-                                    player->second.SetWins(m_PlayersWins.at(name));
+                                    int wins = m_PlayersStorage.GetWins(name);
+                                    player->second.SetWins(wins);
                                     packet << static_cast<int>(ServerCode::Confirm) <<
-                                        name << m_PlayersWins.at(name);
+                                        name << wins;
                                 }
                                 else {
                                     packet << static_cast<int>(ServerCode::NotConfirm);
@@ -104,13 +78,13 @@ namespace Docking::Server {
                             case ClientCode::Logup: {
                                 std::string name, password;
                                 received >> name >> password;
-                                bool confirm = logUpPlayer(name, password);
+                                bool confirm = m_PlayersStorage.LogUp(name, password);
                                 sf::Packet packet;
                                 if (confirm) {
                                     player->second.SetName(name);
-                                    player->second.SetWins(m_PlayersWins.at(name));
+                                    player->second.SetWins(0);
                                     packet << static_cast<int>(ServerCode::Confirm) <<
-                                        name << m_PlayersWins.at(name);
+                                        name << 0;
                                 }
                                 else {
                                     packet << static_cast<int>(ServerCode::NotConfirm);
@@ -121,7 +95,9 @@ namespace Docking::Server {
                             case ClientCode::Leaders: {
                                 sf::Packet leaders;
                                 leaders << static_cast<int>(ServerCode::Leaders);
-                                FormLeaders(leaders);
+                                for (const auto& player : m_PlayersStorage.GetLeaders()) {
+                                    leaders << player.first << player.second;
+                                }
                                 m_NetworkManager.Send(leaders,player->second.GetId());
                                 break;
                             }
@@ -131,7 +107,7 @@ namespace Docking::Server {
                                 sf::Packet packet;
                                 try
                                 {
-                                    int wins = m_PlayersWins.at(name);
+                                    int wins = m_PlayersStorage.GetWins(name);
                                     packet << static_cast<int>(ServerCode::Confirm) << name << wins;
                                 }
                                 catch (const std::exception&)
@@ -145,6 +121,7 @@ namespace Docking::Server {
                                 int gameId = player->second.GetGame();
                                 if (m_Games.at(gameId).IsActive()) {
                                     m_Games.at(gameId).RunNetwork(received, clientCode, player->second.GetId());
+                                    m_PlayersStorage.Win(m_Games.at(gameId).GetWinnerName());
                                     m_Games.erase(gameId);
                                 }           
                                 else {
@@ -158,12 +135,14 @@ namespace Docking::Server {
                                 if (gameId != -1) {
                                     if (m_Games.at(gameId).IsActive()) {
                                         m_Games.at(gameId).RunNetwork(received, clientCode, player->second.GetId());
+                                        m_PlayersStorage.Win(m_Games.at(gameId).GetWinnerName());
                                         m_Games.erase(gameId);
                                     }
                                     else {
                                         m_Games.at(gameId).Clear();
                                     }
                                 }
+                                m_PlayersStorage.LogOut(player->second.GetName());
                                 player = m_Players.erase(player);
                                 continue;
                                 break;
@@ -172,6 +151,7 @@ namespace Docking::Server {
                                 int gameId = player->second.GetGame();
                                 m_Games.at(gameId).RunNetwork(received, clientCode, player->second.GetId());
                                 if (!m_Games.at(gameId).IsActive()) {
+                                    m_PlayersStorage.Win(m_Games.at(gameId).GetWinnerName());
                                     m_Games.erase(gameId);
                                 }
                                 break;

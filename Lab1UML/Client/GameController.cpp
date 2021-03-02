@@ -27,9 +27,6 @@ namespace Docking::Client {
 			while (m_Render.Window().pollEvent(event))
 			{
 				if (event.type == sf::Event::Closed) {
-					sf::Packet closed;
-					closed << static_cast<int>(ClientCode::ClosedWindow);
-					m_NetworkManager.Send(closed);
 					return Code::Exit;
 				}
 				if (event.type == sf::Event::MouseButtonPressed) {

@@ -13,6 +13,11 @@ namespace Docking::Client {
 		leadersRequest << static_cast<int>(ClientCode::Leaders);
 		m_NetworkManager.Send(leadersRequest);
 
+		sf::Packet update;
+		update << static_cast<int>(ClientCode::FindPlayer)
+			<< m_Render.GetName();
+		m_NetworkManager.Send(update);
+
 		sf::Event event;
 
 		while (m_Render.Window().isOpen()) {

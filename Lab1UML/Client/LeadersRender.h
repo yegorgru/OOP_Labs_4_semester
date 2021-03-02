@@ -14,6 +14,8 @@ namespace Docking::Client {
 		sf::RenderWindow& Window();
 		void draw();
 
+		void Restore();
+
 		void AddLetter(char letter);
 		void EraseLetter();
 		std::string GetName();

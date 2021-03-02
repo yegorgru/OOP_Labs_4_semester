@@ -54,6 +54,12 @@ namespace Docking::Client {
 		m_Window.display();
 	}
 
+	void LeadersRender::Restore() {
+		m_TextLeaders = sf::Text("Leaders:\n\n", font, 20);
+		m_TextLeaders.setPosition(30, 50);
+		m_TextLeaders.setFillColor(sf::Color::Black);
+	}
+
 	void LeadersRender::SetPlayer(Player player)
 	{
 		m_Player = player;
