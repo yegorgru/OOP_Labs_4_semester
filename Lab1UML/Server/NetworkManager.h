@@ -4,22 +4,26 @@
 
 #include <SFML/Network.hpp>
 
+#include "Singleton.h"
+
 namespace Docking::Server {
     template <typename Id>
-    class NetworkManager {
+    class NetworkManager : public Singleton<NetworkManager<Id>> {
     public:
-        explicit NetworkManager(sf::SocketSelector& selector);
-
-        virtual ~NetworkManager() noexcept = default;
-
         bool IsReady(Id id);
         void ConnectPlayer(Id id, sf::TcpSocket& socket);
         void Send(sf::Packet packet);
         void Send(sf::Packet& packet, Id id);
         bool Receive(Id id, sf::Packet& packet);
     private:
+        explicit NetworkManager(sf::SocketSelector& selector);
+
+        virtual ~NetworkManager() noexcept = default;
+
         sf::SocketSelector& m_Selector;
         std::unordered_map<Id, sf::TcpSocket*>m_Sockets;
+
+        friend Singleton<NetworkManager<Id>>;
     };
 
     template <typename PlayerId>

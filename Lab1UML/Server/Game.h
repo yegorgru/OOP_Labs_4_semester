@@ -19,7 +19,7 @@ namespace Docking::Server {
 
         Game(NetworkManager<int>& network);
 
-        virtual ~Game() noexcept;
+        virtual ~Game() = default;
 
         void ConnectPlayer(Player& player);
         void RunNetwork(sf::Packet received, ClientCode clientCode, int playerId);

@@ -6,6 +6,5 @@
 
 int main()
 {
-    Docking::Server::Server server;
-    server.Run();
+    Docking::Server::Server::Create()->Run();
 }

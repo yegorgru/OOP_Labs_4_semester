@@ -22,10 +22,6 @@ namespace Docking::Server {
         }
     }
 
-    Game::~Game() {
-        
-    }
-
     void Game::ConnectPlayer(Player& player) {
 		if (m_Players.size() == 0) {
 			m_ElementId[1] = player.GetId();
@@ -114,22 +110,13 @@ namespace Docking::Server {
 
 	void Game::MakeMove(int direction)
 	{
-		Position lastPosition = m_Position;
-		if (!IsCorrectMove(direction)) {
-			return;
-		}
-		int enemy, ally;
-		if (m_CurrentPlayer==1) {
-			ally = 1;
-			enemy = 2;
-		}
-		else {
-			ally = 2;
-			enemy = 1;
-		}
+		if (!IsCorrectMove(direction)) return;
+		int enemy = m_CurrentPlayer == 1 ? 2 : 1;
+		int ally = m_CurrentPlayer;
 		Position pos = GetPosition();
 		int new_pos_x = pos.x, new_pos_y = pos.y;
-		if (direction == 0) {
+		switch (direction) {
+		case 0: {
 			int counter = 0;
 			int copy_pos_x = pos.x;
 			while (copy_pos_x >= 0) {
@@ -149,8 +136,9 @@ namespace Docking::Server {
 				}
 				copy_pos_x--;
 			}
+			break;
 		}
-		else if (direction == 1) {
+		case 1: {
 			int counter = 0;
 			int copy_pos_x = pos.x;
 			while (copy_pos_x <= 7) {
@@ -170,8 +158,9 @@ namespace Docking::Server {
 				}
 				copy_pos_x++;
 			}
+			break;
 		}
-		else if (direction == 2) {
+		case 2: {
 			int counter = 0;
 			int copy_pos_y = pos.y;
 			while (copy_pos_y >= 0) {
@@ -191,8 +180,9 @@ namespace Docking::Server {
 				}
 				copy_pos_y--;
 			}
+			break;
 		}
-		else if (direction == 3) {
+		case 3: {
 			int counter = 0;
 			int copy_pos_y = pos.y;
 			while (copy_pos_y <= 7) {
@@ -213,50 +203,24 @@ namespace Docking::Server {
 				copy_pos_y++;
 			}
 		}
-		if (pos.x != new_pos_x) {
-			m_Map[lastPosition.x][lastPosition.y] = 0;
-			m_Map[new_pos_x][pos.y] = m_CurrentPlayer;
-			CheckClosed({ new_pos_x - 1, pos.y });
-			CheckClosed({new_pos_x + 1, pos.y});
-			CheckClosed({ new_pos_x, pos.y - 1 });
-			CheckClosed({ new_pos_x, pos.y + 1 });
-			IsEnd();
-			m_Position.x = new_pos_x;
-
-			sf::Packet answer;
-			answer << static_cast<int>(ServerCode::SetPosition) <<
-				m_CurrentPlayer <<
-				m_Position.x << m_Position.y << lastPosition.x << lastPosition.y;
-			m_NetworkManager.Send(answer, m_Players[0]->GetId());
-			m_NetworkManager.Send(answer, m_Players[1]->GetId());
-			if (!IsActive()) {
-				EndGame(m_CurrentPlayer);
-				m_Players[m_Winner - 1]->SetWins(m_Players[m_Winner - 1]->GetWins() + 1);
-				sf::Packet packet;
-				packet << static_cast<int>(ServerCode::EndGame) << m_Winner;
-				m_NetworkManager.Send(packet, m_Players[0]->GetId());
-				m_NetworkManager.Send(packet, m_Players[1]->GetId());
-				m_Players[0]->SetGame(-1);
-				m_Players[1]->SetGame(-1);
-				return;
-			}
-			NextTurn();
-			SetPosition(-1, -1);
+		default: {
+			throw std::invalid_argument("Incorrect move code");
 		}
-		else if (pos.y != new_pos_y) {
-			m_Map[lastPosition.x][lastPosition.y] = 0;
-			m_Map[pos.x][new_pos_y] = m_CurrentPlayer;
-			CheckClosed({ pos.x - 1, new_pos_y });
-			CheckClosed({ pos.x + 1, new_pos_y });
-			CheckClosed({ pos.x, new_pos_y - 1 });
-			CheckClosed({ pos.x, new_pos_y + 1 });
+		}
+		if (pos.x != new_pos_x || pos.y != new_pos_y) {
+			m_Map[pos.x][pos.y] = 0;
+			m_Map[new_pos_x][new_pos_y] = m_CurrentPlayer;
+			CheckClosed({ new_pos_x - 1, new_pos_y });
+			CheckClosed({new_pos_x + 1, new_pos_y});
+			CheckClosed({ new_pos_x, new_pos_y - 1 });
+			CheckClosed({ new_pos_x, new_pos_y + 1 });
 			IsEnd();
-			m_Position.y = new_pos_y;
+			m_Position = { new_pos_x,new_pos_y };
 
 			sf::Packet answer;
 			answer << static_cast<int>(ServerCode::SetPosition) <<
 				m_CurrentPlayer <<
-				m_Position.x << m_Position.y << lastPosition.x << lastPosition.y;
+				m_Position.x << m_Position.y << pos.x << pos.y;
 			m_NetworkManager.Send(answer, m_Players[0]->GetId());
 			m_NetworkManager.Send(answer, m_Players[1]->GetId());
 			if (!IsActive()) {
@@ -395,21 +359,7 @@ namespace Docking::Server {
 
 	bool Game::IsCorrectMove(int direction)
 	{
-		if (!m_CurrentPlayer && m_Position.x != -1) {
-			if (direction == 0 && m_Position.x > 0) {
-				return true;
-			}
-			if (direction == 1 && m_Position.x < 7) {
-				return true;
-			}
-			if (direction == 2 && m_Position.y > 0) {
-				return true;
-			}
-			if (direction == 3 && m_Position.y < 7) {
-				return true;
-			}
-		}
-		if (m_CurrentPlayer && m_Position.x != -1) {
+		if (m_Position.x != -1) {
 			if (direction == 0 && m_Position.x > 0) {
 				return true;
 			}

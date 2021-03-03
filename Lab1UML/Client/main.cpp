@@ -9,13 +9,14 @@
 #include "NetworkManager.h"
 #include "Assets.h"
 
-#include <random>
+#include <fstream>
 
 //#define DOCTEST_CONFIG_IMPLEMENT
 //#include "doctest.h"
 
-std::random_device rd;
-std::mt19937 mersenne(rd());
+//#include <random>
+//std::random_device rd;
+//std::mt19937 mersenne(rd());
 
 /*TEST_CASE("testing GameModel") {
     GameModel model;
@@ -281,7 +282,11 @@ int main(){
     using namespace Docking::Client;
     sf::RenderWindow window(sf::VideoMode(640, 690), "Docking", sf::Style::Titlebar | sf::Style::Close);
     Assets::Create();
-    int port = 45000;
+    std::ifstream fin("config.txt");
+    int port;
+    fin >> port;
+    fin.close();
+
     NetworkManager::Create("localhost", port);
     ClientController::Create(window);
     GameModel::Create();

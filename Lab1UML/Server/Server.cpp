@@ -1,15 +1,20 @@
 #include "Server.h"
 
+#include <fstream>
+
 namespace Docking::Server {
 
     Server::Server():
-        m_NetworkManager(m_Selector),
+        m_NetworkManager(*NetworkManager<int>::Create(m_Selector)),
         m_NextIdPlayer(0),
         m_UncompletedGame(0){
 
         m_IsRunning = false;
 
-        m_Port = 45000;
+        std::ifstream fin("config.txt");
+        fin >> m_Port;
+        fin.close();
+
         m_Listener.listen(m_Port);
         m_Selector.add(m_Listener);
 
