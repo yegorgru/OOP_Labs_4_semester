@@ -3,15 +3,20 @@
 #include "LeadersRender.h"
 #include "NetworkManager.h"
 #include "EnumCode.h"
+#include "Controller.h"
+#include "Singleton.h"
 
 namespace Docking::Client {
-	class LeadersController
+	class LeadersController:public Controller, public Singleton<LeadersController>
 	{
 	public:
-		LeadersController(LeadersRender& render, NetworkManager& network);
-		Code Run();
+		Code Run() override;
 	private:
+		LeadersController();
+
 		LeadersRender& m_Render;
 		NetworkManager& m_NetworkManager;
+
+		friend class Singleton<LeadersController>;
 	};
 }

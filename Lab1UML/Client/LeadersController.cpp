@@ -3,9 +3,9 @@
 #include <SFML/Graphics.hpp>
 
 namespace Docking::Client {
-	LeadersController::LeadersController(LeadersRender& render, NetworkManager& network):
-		m_NetworkManager(network),
-		m_Render(render) {}
+	LeadersController::LeadersController():
+		m_NetworkManager(NetworkManager::Get()),
+		m_Render(LeadersRender::Get()) {}
 
 	Code LeadersController::Run()
 	{
@@ -83,7 +83,7 @@ namespace Docking::Client {
 				}
 			}
 
-			m_Render.draw();
+			m_Render.Draw();
 		}
 	}
 }

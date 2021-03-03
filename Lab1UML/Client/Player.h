@@ -6,7 +6,7 @@ namespace Docking::Client {
 	class Player
 	{
 	public:
-		Player() = default;
+		Player();
 		Player(const std::string& name, int wins);
 		std::string GetName() const;
 		void SetName(const std::string& name);

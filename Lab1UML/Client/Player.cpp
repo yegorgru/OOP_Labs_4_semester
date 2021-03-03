@@ -2,6 +2,9 @@
 
 
 namespace Docking::Client {
+	Player::Player():
+		m_Wins(0),m_Name("") {}
+
 	Player::Player(const std::string& name, int wins):
 		m_Name(name),
 		m_Wins(wins) {}

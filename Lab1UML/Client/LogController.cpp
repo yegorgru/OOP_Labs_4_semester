@@ -3,9 +3,14 @@
 #include <SFML/Graphics.hpp>
 
 namespace Docking::Client {
-	LogController::LogController(LogRender& render, NetworkManager& network) :
-		m_Render(render),
-		m_NetworkManager(network) {}
+	LogController::LogController() :
+		m_Render(LogRender::Get()),
+		m_NetworkManager(NetworkManager::Get()) {}
+
+	Code LogController::Run()
+	{
+		return Code::Exit;
+	}
 	
 	Code LogController::Run(Player& player)
 	{
@@ -78,22 +83,7 @@ namespace Docking::Client {
 				}
 			}
 
-			m_Render.draw();
+			m_Render.Draw();
 		}
 	}
-    /*if (event.Type == sf::Event::KeyPressed)
-    {
-        if (event.Key.Code == sf::Key::Back)
-        {
-            text.erase(text.size() - 1);
-        }
-        else if (event.Key.Code == sf::Key::Return)
-        {
-            text += "\n";
-        }
-    }
-    else if (event.Type == sf::Event::TextEntered)
-    {
-        text += (char)event.Text.Unicode;
-    }*/
 }

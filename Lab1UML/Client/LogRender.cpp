@@ -1,4 +1,5 @@
 #include "LogRender.h"
+#include "Assets.h"
 
 namespace Docking::Client {
 	LogRender::LogRender(sf::RenderWindow& window) :
@@ -7,13 +8,12 @@ namespace Docking::Client {
 		m_RectanglePassword(sf::Vector2f(400, 70)),
 		m_RectangleLog(sf::Vector2f(190, 50))
 	{
-		font.loadFromFile("sansation.ttf");
-		m_TextName = sf::Text("", font, 20);
-		m_TextPassword = sf::Text("", font, 20);
-		m_TextLogIn = sf::Text("Log In", font, 20);
-		m_TextLogUp = sf::Text("Log Up", font, 20);
-		m_TextNameTitle = sf::Text("Name", font, 20);
-		m_TextPasswordTitle = sf::Text("Password", font, 20);
+		m_TextName = sf::Text("", Assets::Get().GetFont(), 20);
+		m_TextPassword = sf::Text("", Assets::Get().GetFont(), 20);
+		m_TextLogIn = sf::Text("Log In", Assets::Get().GetFont(), 20);
+		m_TextLogUp = sf::Text("Log Up", Assets::Get().GetFont(), 20);
+		m_TextNameTitle = sf::Text("Name", Assets::Get().GetFont(), 20);
+		m_TextPasswordTitle = sf::Text("Password", Assets::Get().GetFont(), 20);
 		m_TextName.setPosition(30, 100);
 		m_TextNameTitle.setPosition(30, 50);
 		m_TextPassword.setPosition(30, 300);
@@ -36,13 +36,11 @@ namespace Docking::Client {
 		SetFocus(0);
 	}
 
-	sf::RenderWindow& LogRender::Window()
-	{
+	sf::RenderWindow& LogRender::Window() {
 		return m_Window;
 	}
 
-	void LogRender::draw()
-	{
+	void LogRender::Draw() {
 		m_Window.clear(sf::Color(223, 236, 157));
 
 		m_Window.draw(m_RectangleName);
@@ -123,7 +121,7 @@ namespace Docking::Client {
 		m_Password = "";
 		sf::Clock clock;
 		while (true) {
-			draw();
+			Draw();
 			if (clock.getElapsedTime().asSeconds() > 3) {
 				m_RectangleName.setOutlineColor(sf::Color::Black);
 				m_RectanglePassword.setOutlineColor(sf::Color::Black);

@@ -1,10 +1,12 @@
 #include "GameRender.h"
+#include "Assets.h"
 
 #include <string>
 
+
 namespace Docking::Client {
-	GameRender::GameRender(GameModel& game, sf::RenderWindow& window) :
-		m_GameModel(game), 
+	GameRender::GameRender(sf::RenderWindow& window) :
+		m_GameModel(GameModel::Get()),
 		m_Window(window),
 		m_Square(sf::Vector2f(75, 75))
 	{
@@ -16,7 +18,7 @@ namespace Docking::Client {
 		return m_Window;
 	}
 
-	void GameRender::draw()
+	void GameRender::Draw()
 	{
 		m_Window.clear(sf::Color(223,236,157));
 		if (m_GameModel.GetPlayers().size() < 2) {
@@ -43,7 +45,7 @@ namespace Docking::Client {
 			for (int i = 0; i < 8; i++) {
 				for (int j = 0; j < 8; j++)
 				{
-					m_Square.setPosition(i * w, 50 + j * w);
+					m_Square.setPosition(i * m_ElementSize, 50 + j * m_ElementSize);
 
 					if (m_GameModel.GetElement({ i, j }) == 1) {
 						m_Square.setFillColor(sf::Color(153, 255, 204));
@@ -62,8 +64,8 @@ namespace Docking::Client {
 		m_Window.display();
 	}
 
-	int GameRender::get_element_size() {
-		return w;
+	int GameRender::GetElementSize() {
+		return m_ElementSize;
 	}
 
 	void GameRender::SetEndText(const std::string& text) {
@@ -73,14 +75,13 @@ namespace Docking::Client {
 	void GameRender::Restore() {
 		m_Square.setOutlineThickness(5);
 		m_Square.setOutlineColor(sf::Color::Black);
-		w = 80;
-		m_Font.loadFromFile("sansation.ttf");
-		m_TextWaiting = sf::Text("Waiting for opponent", m_Font, 50);
+		m_ElementSize = 80;
+		m_TextWaiting = sf::Text("Waiting for opponent", Assets::Get().GetFont(), 50);
 		m_TextWaiting.setPosition(50, 300);
-		m_TextPlayers = sf::Text("", m_Font, 30);
+		m_TextPlayers = sf::Text("", Assets::Get().GetFont(), 30);
 		m_TextPlayers.setPosition(30, 10);
 		m_TextPlayers.setFillColor(sf::Color::Black);
-		m_TextEnd = sf::Text("", m_Font, 50);
+		m_TextEnd = sf::Text("", Assets::Get().GetFont(), 50);
 		m_TextEnd.setPosition(100, 300);
 		m_TextEnd.setFillColor(sf::Color::Red);
 	}

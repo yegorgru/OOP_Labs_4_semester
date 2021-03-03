@@ -1,4 +1,5 @@
 #include "LeadersRender.h"
+#include "Assets.h"
 
 namespace Docking::Client {
 	LeadersRender::LeadersRender(sf::RenderWindow& window) :
@@ -6,12 +7,11 @@ namespace Docking::Client {
 		m_RectangleName(sf::Vector2f(250, 70)),
 		m_RectangleFind(sf::Vector2f(100, 50))
 	{
-		font.loadFromFile("sansation.ttf");
-		m_TextName = sf::Text("", font, 20);
-		m_TextFind = sf::Text("Find", font, 20);
-		m_TextWins = sf::Text("Wins", font, 20);
-		m_TextWinsNumber = sf::Text("", font, 20);
-		m_TextLeaders = sf::Text("Leaders:\n\n", font, 20);
+		m_TextName = sf::Text("", Assets::Get().GetFont(), 20);
+		m_TextFind = sf::Text("Find", Assets::Get().GetFont(), 20);
+		m_TextWins = sf::Text("Wins", Assets::Get().GetFont(), 20);
+		m_TextWinsNumber = sf::Text("", Assets::Get().GetFont(), 20);
+		m_TextLeaders = sf::Text("Leaders:\n\n", Assets::Get().GetFont(), 20);
 		m_TextName.setPosition(330, 100);
 		m_TextFind.setPosition(480, 190);
 		m_TextWins.setPosition(590, 50);
@@ -38,7 +38,7 @@ namespace Docking::Client {
 		return m_Window;
 	}
 
-	void LeadersRender::draw()
+	void LeadersRender::Draw()
 	{
 		m_Window.clear(sf::Color(223, 236, 157));
 
@@ -55,7 +55,7 @@ namespace Docking::Client {
 	}
 
 	void LeadersRender::Restore() {
-		m_TextLeaders = sf::Text("Leaders:\n\n", font, 20);
+		m_TextLeaders = sf::Text("Leaders:\n\n", Assets::Get().GetFont(), 20);
 		m_TextLeaders.setPosition(30, 50);
 		m_TextLeaders.setFillColor(sf::Color::Black);
 	}
@@ -98,7 +98,7 @@ namespace Docking::Client {
 		m_TextName.setString("");
 		sf::Clock clock;
 		while (true) {
-			draw();
+			Draw();
 			if (clock.getElapsedTime().asSeconds() > 3) {
 				m_RectangleName.setOutlineColor(sf::Color::Black);
 				return;

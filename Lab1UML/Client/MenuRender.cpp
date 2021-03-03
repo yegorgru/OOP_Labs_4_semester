@@ -1,13 +1,13 @@
 #include "MenuRender.h"
+#include "Assets.h"
 
 namespace Docking::Client {
 	MenuRender::MenuRender(sf::RenderWindow& window) :
 		m_Window(window),
 		m_Rectangle(sf::Vector2f(200, 70)) {
-		font.loadFromFile("sansation.ttf");
-		m_TextPlay = sf::Text("Play", font, 20);
-		m_TextLeaders = sf::Text("Leaders", font, 20);
-		m_TextExit = sf::Text("Exit", font, 20);
+		m_TextPlay = sf::Text("Play", Assets::Get().GetFont(), 20);
+		m_TextLeaders = sf::Text("Leaders", Assets::Get().GetFont(), 20);
+		m_TextExit = sf::Text("Exit", Assets::Get().GetFont(), 20);
 		m_TextPlay.setPosition(30, 100);
 		m_TextLeaders.setPosition(30, 300);
 		m_TextExit.setPosition(30, 500);
@@ -19,7 +19,7 @@ namespace Docking::Client {
 		return m_Window;
 	}
 
-	void MenuRender::draw()
+	void MenuRender::Draw()
 	{
 		m_Window.clear(sf::Color(223, 236, 157));
 		

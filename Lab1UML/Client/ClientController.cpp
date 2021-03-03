@@ -8,46 +8,35 @@
 #include "LeadersRender.h"
 
 namespace Docking::Client {
-	ClientController::ClientController():
-		m_NetworkManager("localhost", 45000){}
+	ClientController::ClientController(sf::RenderWindow& window):
+		m_Window(window) {}
 
 	void ClientController::Run() {
-		sf::RenderWindow window(sf::VideoMode(640, 690), "Docking", sf::Style::Titlebar | sf::Style::Close);
-		GameModel model;
-		GameRender gameRender(model, window);
-		GameController gameController(model, gameRender, m_NetworkManager);
-		MenuRender menuRender(window);
-		MenuController menuController(menuRender,m_NetworkManager);
-		LogRender logRender(window);
-		LogController logController(logRender, m_NetworkManager);
-		LeadersRender leadersRender(window);
-		LeadersController leadersController(leadersRender, m_NetworkManager);
-
-		Code code = logController.Run(m_Player);
+		Code code = LogController::Get().Run(m_Player);
 		while (true) {
 			switch (code) {
 			case Code::Exit: {
 				sf::Packet closed;
 				closed << static_cast<int>(ClientCode::ClosedWindow);
-				m_NetworkManager.Send(closed);
-				window.close();
+				NetworkManager::Get().Send(closed);
+				m_Window.close();
 				return;
 			}
 			case Code::Menu: {
-				code = menuController.Run();
+				code = MenuController::Get().Run();
 				break;
 			}
 			case Code::PlayGame: {
-				gameController.Restore();
-				model.Restore();
-				gameRender.Restore();
-				code = gameController.Run();
+				GameController::Get().Restore();
+				GameModel::Get().Restore();
+				GameRender::Get().Restore();
+				code = GameController::Get().Run();
 				break;
 			}
 			case Code::Leaders: {
-				leadersRender.Restore();
-				leadersRender.SetPlayer(m_Player);
-				code = leadersController.Run();
+				LeadersRender::Get().Restore();
+				LeadersRender::Get().SetPlayer(m_Player);
+				code = LeadersController::Get().Run();
 				break;
 			}
 			}

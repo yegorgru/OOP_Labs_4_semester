@@ -1,6 +1,13 @@
 #include "GameModel.h"
 #include "ClientController.h"
 #include "GameRender.h"
+#include "ClientController.h"
+#include "MenuController.h"
+#include "LogController.h"
+#include "LeadersController.h"
+#include "LeadersRender.h"
+#include "NetworkManager.h"
+#include "Assets.h"
 
 #include <random>
 
@@ -271,7 +278,21 @@ std::mt19937 mersenne(rd());
 }*/
 
 int main(){
-    Docking::Client::ClientController controller;
-	controller.Run();
+    using namespace Docking::Client;
+    sf::RenderWindow window(sf::VideoMode(640, 690), "Docking", sf::Style::Titlebar | sf::Style::Close);
+    Assets::Create();
+    int port = 45000;
+    NetworkManager::Create("localhost", port);
+    ClientController::Create(window);
+    GameModel::Create();
+    GameRender::Create(window);
+    GameController::Create();
+    MenuRender::Create(window);
+    MenuController::Create();
+    LogRender::Create(window);
+    LogController::Create();
+    LeadersRender::Create(window);
+    LeadersController::Create();
+    Docking::Client::ClientController::Get().Run();
 	return 0;
 }

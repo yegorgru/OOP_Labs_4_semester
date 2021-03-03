@@ -3,10 +3,10 @@
 #include <SFML/Network.hpp>
 
 namespace Docking::Client {
-	GameController::GameController(GameModel& gameModel, GameRender& render, NetworkManager& network) :
-		m_Model(gameModel),
-		m_Render(render),
-		m_NetworkManager(network)
+	GameController::GameController() :
+		m_Model(GameModel::Get()),
+		m_Render(GameRender::Get()),
+		m_NetworkManager(NetworkManager::Get())
 	{
 		Restore();
 	}
@@ -22,8 +22,8 @@ namespace Docking::Client {
 		while (m_Render.Window().isOpen())
 		{
 			sf::Vector2i pos = sf::Mouse::getPosition(m_Render.Window());
-			int x = pos.x / m_Render.get_element_size();
-			int y = (pos.y-50) / m_Render.get_element_size();
+			int x = pos.x / m_Render.GetElementSize();
+			int y = (pos.y-50) / m_Render.GetElementSize();
 			while (m_Render.Window().pollEvent(event))
 			{
 				if (event.type == sf::Event::Closed) {
@@ -105,7 +105,7 @@ namespace Docking::Client {
 				}
 				}
 			}
-			m_Render.draw();
+			m_Render.Draw();
 		}
 	}
 

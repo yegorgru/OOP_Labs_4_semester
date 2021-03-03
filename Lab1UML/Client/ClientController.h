@@ -5,15 +5,19 @@
 #include "GameController.h"
 #include "MenuController.h"
 #include "Player.h"
+#include "Singleton.h"
 
 namespace Docking::Client {
-	class ClientController
+	class ClientController : public Singleton<ClientController>
 	{		
 	public:
-		ClientController();
 		void Run();
 	private:
-		NetworkManager m_NetworkManager;
+		ClientController(sf::RenderWindow& window);
+
 		Player m_Player;
+		sf::RenderWindow& m_Window;
+
+		friend class Singleton<ClientController>;
 	};
 }

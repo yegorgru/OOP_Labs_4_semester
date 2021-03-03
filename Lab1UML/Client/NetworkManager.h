@@ -3,16 +3,18 @@
 #include <SFML/Network.hpp>
 #include <iostream>
 
-namespace Docking::Client {
-    class NetworkManager {
-    public:
-        NetworkManager(const sf::IpAddress& ip, unsigned port);
-        ~NetworkManager() = default;
+#include "Singleton.h"
 
+namespace Docking::Client {
+    class NetworkManager : public Singleton<NetworkManager> {
+    public:
         void SetBlocking(bool value);
         bool Receive(sf::Packet& packet);
         void Send(sf::Packet& packet);
     private:
+        NetworkManager(const sf::IpAddress& ip, unsigned port);
         sf::TcpSocket m_Connection;
+        
+        friend class Singleton<NetworkManager>;
     };
 }

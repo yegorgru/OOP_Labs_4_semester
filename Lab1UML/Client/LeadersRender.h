@@ -5,14 +5,15 @@
 #include <string>
 
 #include "Player.h"
+#include "Render.h"
+#include "Singleton.h"
 
 namespace Docking::Client {
-	class LeadersRender
+	class LeadersRender : public Render, public Singleton<LeadersRender>
 	{
 	public:
-		LeadersRender(sf::RenderWindow& window);
-		sf::RenderWindow& Window();
-		void draw();
+		sf::RenderWindow& Window() override;
+		void Draw() override;
 
 		void Restore();
 
@@ -24,6 +25,8 @@ namespace Docking::Client {
 		void SetPlayer(Player player);
 		void AddLeader(const Player& player);
 	private:
+		LeadersRender(sf::RenderWindow& window);
+
 		sf::RenderWindow& m_Window;
 		sf::RectangleShape m_RectangleName;
 		sf::RectangleShape m_RectangleFind;
@@ -34,9 +37,9 @@ namespace Docking::Client {
 		sf::Text m_TextWinsNumber;
 		sf::Text m_TextLeaders;
 
-		sf::Font font;
-
 		Player m_Player;
+
+		friend class Singleton<LeadersRender>;
 	};
 }
 

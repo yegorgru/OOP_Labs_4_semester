@@ -2,14 +2,18 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Render.h"
+#include "Singleton.h"
+
 namespace Docking::Client {
-	class MenuRender
+	class MenuRender:public Render, public Singleton<MenuRender>
 	{
 	public:
-		MenuRender(sf::RenderWindow& window);
-		sf::RenderWindow& Window();
-		void draw();
+		sf::RenderWindow& Window() override;
+		void Draw() override;
 	private:
+		MenuRender(sf::RenderWindow& window);
+
 		sf::RenderWindow& m_Window;
 		sf::RectangleShape m_Rectangle;
 
@@ -17,6 +21,6 @@ namespace Docking::Client {
 		sf::Text m_TextLeaders;
 		sf::Text m_TextExit;
 
-		sf::Font font;
+		friend  Singleton<MenuRender>;
 	};
 }

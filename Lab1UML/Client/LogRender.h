@@ -4,13 +4,15 @@
 
 #include <string>
 
+#include "Render.h"
+#include "Singleton.h"
+
 namespace Docking::Client {
-	class LogRender
+	class LogRender : public Render, public Singleton<LogRender>
 	{
 	public:
-		LogRender(sf::RenderWindow& window);
-		sf::RenderWindow& Window();
-		void draw();
+		sf::RenderWindow& Window() override;
+		void Draw() override;
 
 		void SetFocus(bool focus);
 		void AddLetter(char letter);
@@ -19,6 +21,7 @@ namespace Docking::Client {
 		std::string GetPassword();
 		void IncorrectLog();
 	private:
+		LogRender(sf::RenderWindow& window);
 		sf::RenderWindow& m_Window;
 		sf::RectangleShape m_RectangleName;
 		sf::RectangleShape m_RectanglePassword;
@@ -31,11 +34,11 @@ namespace Docking::Client {
 		sf::Text m_TextNameTitle;
 		sf::Text m_TextPasswordTitle;
 
-		sf::Font font;
-
 		bool m_Focus;
 
 		std::string m_Password;
+
+		friend class Singleton<LogRender>;
 	};
 }
 
