@@ -44,6 +44,7 @@ namespace Docking::Server {
 		if (clientCode == ClientCode::ClosedWindow || clientCode == ClientCode::ClosedGame) {
 			if (m_Players.size() == 2) {
 				EndGame(m_IdElement.at(AnotherPlayerId(playerId)));
+				m_Players[m_Winner - 1]->SetWins(m_Players[m_Winner - 1]->GetWins() + 1);
 				answer << static_cast<int>(ServerCode::EndGame) << m_Winner;
 				m_NetworkManager.Send(answer, AnotherPlayerId(playerId));
 				m_Players[m_IdElement[AnotherPlayerId(playerId)]-1]->SetGame(-1);
@@ -55,47 +56,27 @@ namespace Docking::Server {
 		}
 
 		else if (m_IdElement.at(playerId) != m_CurrentPlayer) return;
-		Position lastPosition = m_Position;
-		bool success = false;
 		switch (clientCode) {
 		case ClientCode::Position: {
 			received >> m_Position.x >> m_Position.y;
 			break;
 		}
 		case ClientCode::Left: {
-			success = MakeMove(0);
+			MakeMove(0);
 			break;
 		}
 		case ClientCode::Right: {
-			success = MakeMove(1);
+			MakeMove(1);
 			break;
 		}
 		case ClientCode::Up: {
-			success = MakeMove(2);
+			MakeMove(2);
 			break;
 		}
 		case ClientCode::Down: {
-			success = MakeMove(3);
+			MakeMove(3);
 			break;
 		}
-		}
-		if (success) {
-			answer << static_cast<int>(ServerCode::SetPosition) <<
-				m_IdElement.at(playerId) <<
-				m_Position.x << m_Position.y << lastPosition.x << lastPosition.y;
-			m_NetworkManager.Send(answer,m_Players[0]->GetId());
-			m_NetworkManager.Send(answer, m_Players[1]->GetId());
-			NextTurn();
-			SetPosition(-1, -1);
-			if (!IsActive()) {
-				EndGame(m_IdElement.at(playerId));
-				sf::Packet packet;
-				packet << static_cast<int>(ServerCode::EndGame) << m_Winner;
-				m_NetworkManager.Send(packet, m_Players[0]->GetId());
-				m_NetworkManager.Send(packet, m_Players[1]->GetId());
-				m_Players[0]->SetGame(-1);
-				m_Players[1]->SetGame(-1);
-			}
 		}
     }
 
@@ -115,8 +96,8 @@ namespace Docking::Server {
 		m_Position = { x,y };
 	}
 
-	int Game::GetWinner() const	{
-		return m_Winner;
+	int Game::GetWinnerId() const	{
+		return m_ElementId.at(m_Winner);
 	}
 
 	std::string Game::GetWinnerName() const {
@@ -131,10 +112,11 @@ namespace Docking::Server {
 		m_CurrentPlayer = m_CurrentPlayer == 1 ? 2 : 1;
 	}
 
-	bool Game::MakeMove(int direction)
+	void Game::MakeMove(int direction)
 	{
+		Position lastPosition = m_Position;
 		if (!IsCorrectMove(direction)) {
-			return false;
+			return;
 		}
 		int enemy, ally;
 		if (m_CurrentPlayer==1) {
@@ -232,7 +214,7 @@ namespace Docking::Server {
 			}
 		}
 		if (pos.x != new_pos_x) {
-			m_Map[pos.x][pos.y] = 0;
+			m_Map[lastPosition.x][lastPosition.y] = 0;
 			m_Map[new_pos_x][pos.y] = m_CurrentPlayer;
 			CheckClosed({ new_pos_x - 1, pos.y });
 			CheckClosed({new_pos_x + 1, pos.y});
@@ -240,10 +222,29 @@ namespace Docking::Server {
 			CheckClosed({ new_pos_x, pos.y + 1 });
 			IsEnd();
 			m_Position.x = new_pos_x;
-			return true;
+
+			sf::Packet answer;
+			answer << static_cast<int>(ServerCode::SetPosition) <<
+				m_CurrentPlayer <<
+				m_Position.x << m_Position.y << lastPosition.x << lastPosition.y;
+			m_NetworkManager.Send(answer, m_Players[0]->GetId());
+			m_NetworkManager.Send(answer, m_Players[1]->GetId());
+			if (!IsActive()) {
+				EndGame(m_CurrentPlayer);
+				m_Players[m_Winner - 1]->SetWins(m_Players[m_Winner - 1]->GetWins() + 1);
+				sf::Packet packet;
+				packet << static_cast<int>(ServerCode::EndGame) << m_Winner;
+				m_NetworkManager.Send(packet, m_Players[0]->GetId());
+				m_NetworkManager.Send(packet, m_Players[1]->GetId());
+				m_Players[0]->SetGame(-1);
+				m_Players[1]->SetGame(-1);
+				return;
+			}
+			NextTurn();
+			SetPosition(-1, -1);
 		}
-		if (pos.y != new_pos_y) {
-			m_Map[pos.x][pos.y] = 0;
+		else if (pos.y != new_pos_y) {
+			m_Map[lastPosition.x][lastPosition.y] = 0;
 			m_Map[pos.x][new_pos_y] = m_CurrentPlayer;
 			CheckClosed({ pos.x - 1, new_pos_y });
 			CheckClosed({ pos.x + 1, new_pos_y });
@@ -251,9 +252,27 @@ namespace Docking::Server {
 			CheckClosed({ pos.x, new_pos_y + 1 });
 			IsEnd();
 			m_Position.y = new_pos_y;
-			return true;
+
+			sf::Packet answer;
+			answer << static_cast<int>(ServerCode::SetPosition) <<
+				m_CurrentPlayer <<
+				m_Position.x << m_Position.y << lastPosition.x << lastPosition.y;
+			m_NetworkManager.Send(answer, m_Players[0]->GetId());
+			m_NetworkManager.Send(answer, m_Players[1]->GetId());
+			if (!IsActive()) {
+				EndGame(m_CurrentPlayer);
+				m_Players[m_Winner - 1]->SetWins(m_Players[m_Winner - 1]->GetWins() + 1);
+				sf::Packet packet;
+				packet << static_cast<int>(ServerCode::EndGame) << m_Winner;
+				m_NetworkManager.Send(packet, m_Players[0]->GetId());
+				m_NetworkManager.Send(packet, m_Players[1]->GetId());
+				m_Players[0]->SetGame(-1);
+				m_Players[1]->SetGame(-1);
+				return;
+			}
+			NextTurn();
+			SetPosition(-1, -1);
 		}
-		return false;
 	}
 
 	bool Game::IsEnd() {

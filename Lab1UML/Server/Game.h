@@ -30,14 +30,14 @@ namespace Docking::Server {
 
         void SetPosition(int x, int y);
 
-        int GetWinner() const;
+        int GetWinnerId() const;
         std::string GetWinnerName() const;
 
         Position GetPosition() const;
 
         void NextTurn();
 
-        bool MakeMove(int direction);
+        void MakeMove(int direction);
 
         bool IsEnd();
         
