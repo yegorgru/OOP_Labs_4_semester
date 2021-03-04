@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LogRender.h"
+#include "SignRender.h"
 #include "EnumCode.h"
 #include "NetworkManager.h"
 #include "Player.h"
@@ -8,17 +8,17 @@
 #include "Singleton.h"
 
 namespace Docking::Client {
-	class LogController:public Controller, public Singleton<LogController>
+	class SignController:public Controller, public Singleton<SignController>
 	{
 	public:
 		Code Run() override;
 		Code Run(Player& player);
 	private:
-		LogController();
-		LogRender& m_Render;
+		SignController();
+		SignRender& m_Render;
 		NetworkManager& m_NetworkManager;
 
-		friend class Singleton<LogController>;
+		friend class Singleton<SignController>;
 	};
 }
 

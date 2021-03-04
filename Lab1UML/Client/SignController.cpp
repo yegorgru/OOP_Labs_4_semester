@@ -1,18 +1,18 @@
-#include "LogController.h"
+#include "SignController.h"
 
 #include <SFML/Graphics.hpp>
 
 namespace Docking::Client {
-	LogController::LogController() :
-		m_Render(LogRender::Get()),
+	SignController::SignController() :
+		m_Render(SignRender::Get()),
 		m_NetworkManager(NetworkManager::Get()) {}
 
-	Code LogController::Run()
+	Code SignController::Run()
 	{
 		return Code::Exit;
 	}
 	
-	Code LogController::Run(Player& player)
+	Code SignController::Run(Player& player)
 	{
 		sf::Event event;
 

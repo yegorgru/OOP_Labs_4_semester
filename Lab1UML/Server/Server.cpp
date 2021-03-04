@@ -65,7 +65,7 @@ namespace Docking::Server {
                             case ClientCode::Login: {
                                 std::string name, password;
                                 received >> name >> password;
-                                bool confirm = m_PlayersStorage.LogIn(name, password);
+                                bool confirm = m_PlayersStorage.SignIn(name, password);
                                 sf::Packet packet;
                                 if (confirm) {
                                     player->second.SetName(name);
@@ -83,7 +83,7 @@ namespace Docking::Server {
                             case ClientCode::Logup: {
                                 std::string name, password;
                                 received >> name >> password;
-                                bool confirm = m_PlayersStorage.LogUp(name, password);
+                                bool confirm = m_PlayersStorage.SignUp(name, password);
                                 sf::Packet packet;
                                 if (confirm) {
                                     player->second.SetName(name);
@@ -147,7 +147,7 @@ namespace Docking::Server {
                                         m_Games.at(gameId).Clear();
                                     }
                                 }
-                                m_PlayersStorage.LogOut(player->second.GetName());
+                                m_PlayersStorage.SignOut(player->second.GetName());
                                 player = m_Players.erase(player);
                                 continue;
                                 break;

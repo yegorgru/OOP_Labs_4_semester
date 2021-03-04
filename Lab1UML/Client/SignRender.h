@@ -8,7 +8,7 @@
 #include "Singleton.h"
 
 namespace Docking::Client {
-	class LogRender : public Render, public Singleton<LogRender>
+	class SignRender : public Render, public Singleton<SignRender>
 	{
 	public:
 		sf::RenderWindow& Window() override;
@@ -21,16 +21,16 @@ namespace Docking::Client {
 		std::string GetPassword();
 		void IncorrectLog();
 	private:
-		LogRender(sf::RenderWindow& window);
+		SignRender(sf::RenderWindow& window);
 		sf::RenderWindow& m_Window;
 		sf::RectangleShape m_RectangleName;
 		sf::RectangleShape m_RectanglePassword;
-		sf::RectangleShape m_RectangleLog;
+		sf::RectangleShape m_RectangleSign;
 
 		sf::Text m_TextName;
 		sf::Text m_TextPassword;
-		sf::Text m_TextLogUp;
-		sf::Text m_TextLogIn;
+		sf::Text m_TextSignUp;
+		sf::Text m_TextSignIn;
 		sf::Text m_TextNameTitle;
 		sf::Text m_TextPasswordTitle;
 
@@ -38,7 +38,7 @@ namespace Docking::Client {
 
 		std::string m_Password;
 
-		friend class Singleton<LogRender>;
+		friend class Singleton<SignRender>;
 	};
 }
 

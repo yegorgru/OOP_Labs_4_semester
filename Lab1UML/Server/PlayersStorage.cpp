@@ -28,7 +28,7 @@ std::vector<std::pair<int, std::string>> Docking::Server::PlayersStorage::GetLea
     return leaders;
 }
 
-bool Docking::Server::PlayersStorage::LogIn(const std::string& name, const std::string& password)
+bool Docking::Server::PlayersStorage::SignIn(const std::string& name, const std::string& password)
 {
     auto it = m_PlayersPasswords.find(name);
     if (it != m_PlayersPasswords.end() && it->second == password && m_OnlinePlayers.count(name)==0) {
@@ -38,7 +38,7 @@ bool Docking::Server::PlayersStorage::LogIn(const std::string& name, const std::
     return false;
 }
 
-bool Docking::Server::PlayersStorage::LogUp(const std::string& name, const std::string& password)
+bool Docking::Server::PlayersStorage::SignUp(const std::string& name, const std::string& password)
 {
     if (m_PlayersPasswords.find(name) == m_PlayersPasswords.end()) {
         m_PlayersPasswords[name] = password;
@@ -52,7 +52,7 @@ bool Docking::Server::PlayersStorage::LogUp(const std::string& name, const std::
     return false;
 }
 
-void Docking::Server::PlayersStorage::LogOut(const std::string& name)
+void Docking::Server::PlayersStorage::SignOut(const std::string& name)
 {
     m_OnlinePlayers.erase(name);
 }

@@ -16,9 +16,9 @@ namespace Docking::Server {
         PlayersStorage();
         int GetWins(const std::string& name);
         std::vector<std::pair<int, std::string>> GetLeaders();
-        bool LogIn(const std::string& name, const std::string& password);
-        bool LogUp(const std::string& name, const std::string& password);
-        void LogOut(const std::string& name);
+        bool SignIn(const std::string& name, const std::string& password);
+        bool SignUp(const std::string& name, const std::string& password);
+        void SignOut(const std::string& name);
         void Win(const std::string name);
     private:
         void BackUp();

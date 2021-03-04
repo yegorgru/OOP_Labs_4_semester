@@ -3,7 +3,7 @@
 #include "GameRender.h"
 #include "ClientController.h"
 #include "MenuController.h"
-#include "LogController.h"
+#include "SignController.h"
 #include "LeadersController.h"
 #include "LeadersRender.h"
 #include "NetworkManager.h"
@@ -294,8 +294,8 @@ int main(){
     GameController::Create();
     MenuRender::Create(window);
     MenuController::Create();
-    LogRender::Create(window);
-    LogController::Create();
+    SignRender::Create(window);
+    SignController::Create();
     LeadersRender::Create(window);
     LeadersController::Create();
     Docking::Client::ClientController::Get().Run();

@@ -3,7 +3,7 @@
 #include "ClientController.h"
 #include "MenuController.h"
 #include "EnumCode.h"
-#include "LogController.h"
+#include "SignController.h"
 #include "LeadersController.h"
 #include "LeadersRender.h"
 
@@ -12,7 +12,7 @@ namespace Docking::Client {
 		m_Window(window) {}
 
 	void ClientController::Run() {
-		Code code = LogController::Get().Run(m_Player);
+		Code code = SignController::Get().Run(m_Player);
 		while (true) {
 			switch (code) {
 			case Code::Exit: {
