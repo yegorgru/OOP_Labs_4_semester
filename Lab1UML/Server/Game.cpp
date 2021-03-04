@@ -1,8 +1,8 @@
 #include "Game.h"
 
 namespace Docking::Server {
-    Game::Game(NetworkManager<int>& network) :
-        m_NetworkManager(network),
+    Game::Game() :
+        m_NetworkManager(NetworkManager<int>::Get()),
         m_CurrentPlayer(0),
 		m_Position{-1,-1},
 		m_Winner(0){
@@ -34,7 +34,7 @@ namespace Docking::Server {
 		m_Players.push_back(&player);
     }
 
-    void Game::RunNetwork(sf::Packet received, ClientCode clientCode, int playerId) {
+    void Game::RunNetwork(sf::Packet& received, ClientCode clientCode, int playerId) {
         if (!IsActive()) throw std::invalid_argument("Not active game");
 		sf::Packet answer;
 		if (clientCode == ClientCode::ClosedWindow || clientCode == ClientCode::ClosedGame) {
@@ -76,7 +76,7 @@ namespace Docking::Server {
 		}
     }
 
-	bool Game::CurrentPlayer() const {
+	int Game::CurrentPlayer() const {
 		return m_CurrentPlayer;
 	}
 
@@ -202,9 +202,11 @@ namespace Docking::Server {
 				}
 				copy_pos_y++;
 			}
+			break;
 		}
 		default: {
 			throw std::invalid_argument("Incorrect move code");
+			break;
 		}
 		}
 		if (pos.x != new_pos_x || pos.y != new_pos_y) {

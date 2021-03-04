@@ -12,7 +12,7 @@ namespace Docking::Server {
     public:
         bool IsReady(Id id);
         void ConnectPlayer(Id id, sf::TcpSocket& socket);
-        void Send(sf::Packet packet);
+        void Send(sf::Packet& packet);
         void Send(sf::Packet& packet, Id id);
         bool Receive(Id id, sf::Packet& packet);
     private:
@@ -42,7 +42,7 @@ namespace Docking::Server {
     }
 
     template<typename Id>
-    void NetworkManager<Id>::Send(sf::Packet packet) {
+    void NetworkManager<Id>::Send(sf::Packet& packet) {
         for (auto& socketNode : m_Sockets) {
             if (socketNode.second->send(packet) != sf::Socket::Done) {
                 std::cout << "Failed to send data to socket #{0}" << std::endl;

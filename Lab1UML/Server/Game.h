@@ -17,14 +17,14 @@ namespace Docking::Server {
             int y;
         };
 
-        Game(NetworkManager<int>& network);
+        Game();
 
         virtual ~Game() = default;
 
         void ConnectPlayer(Player& player);
-        void RunNetwork(sf::Packet received, ClientCode clientCode, int playerId);
+        void RunNetwork(sf::Packet& received, ClientCode clientCode, int playerId);
 
-        bool CurrentPlayer() const;
+        int CurrentPlayer() const;
 
         int GetElement(int x, int y) const;
 
