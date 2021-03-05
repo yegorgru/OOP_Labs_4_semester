@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['player_61',['Player',['../class_docking_1_1_client_1_1_player.html',1,'Docking::Client::Player'],['../class_docking_1_1_client_1_1_player.html#a2cae09b2d3c5365c2954995036b05a19',1,'Docking::Client::Player::Player()'],['../class_docking_1_1_client_1_1_player.html#a3b4cf2d079971375cda808bd209516d5',1,'Docking::Client::Player::Player(const std::string &amp;name, int wins)']]],
-  ['player_2ecpp_62',['Player.cpp',['../_player_8cpp.html',1,'']]],
-  ['player_2eh_63',['Player.h',['../_player_8h.html',1,'']]],
-  ['position_64',['Position',['../struct_docking_1_1_client_1_1_game_model_1_1_position.html',1,'Docking::Client::GameModel']]]
+  ['operator_3d_116',['operator=',['../class_non_copyable.html#a09b510381d825b0b283132f0a650b925',1,'NonCopyable::operator=()'],['../class_non_moveable.html#a39ae64f63fc09b27a43137c9ccf405eb',1,'NonMoveable::operator=()']]],
+  ['operator_3d_3d_117',['operator==',['../namespace_docking_1_1_client.html#a3223fb0e08db932236333fde1e59a4b6',1,'Docking::Client']]]
 ];

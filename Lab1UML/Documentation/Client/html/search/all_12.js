@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['_7enoncopyable_157',['~NonCopyable',['../class_non_copyable.html#a143ae2a73c598b07b1c3dcbd22514027',1,'NonCopyable']]],
-  ['_7enonmoveable_158',['~NonMoveable',['../class_non_moveable.html#a351e9a146fcacae313e6ffb9cdf33c66',1,'NonMoveable']]]
+  ['y_167',['y',['../struct_docking_1_1_client_1_1_game_model_1_1_position.html#ac210ec9e3d8efddf3b5b098600827da4',1,'Docking::Client::GameModel::Position']]]
 ];

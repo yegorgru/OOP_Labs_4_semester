@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['player_192',['Player',['../class_docking_1_1_client_1_1_player.html#a2cae09b2d3c5365c2954995036b05a19',1,'Docking::Client::Player::Player()'],['../class_docking_1_1_client_1_1_player.html#a3b4cf2d079971375cda808bd209516d5',1,'Docking::Client::Player::Player(const std::string &amp;name, int wins)']]]
+  ['operator_3d_268',['operator=',['../class_non_copyable.html#a09b510381d825b0b283132f0a650b925',1,'NonCopyable::operator=()'],['../class_non_moveable.html#a39ae64f63fc09b27a43137c9ccf405eb',1,'NonMoveable::operator=()']]],
+  ['operator_3d_3d_269',['operator==',['../namespace_docking_1_1_client.html#a3223fb0e08db932236333fde1e59a4b6',1,'Docking::Client']]]
 ];

@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>Docking</b></li><li class="navelem"><b>Client</b></li><li class="navelem"><a class="el" href="class_docking_1_1_client_1_1_render.html">Render</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespace_docking.html">Docking</a></li><li class="navelem"><a class="el" href="namespace_docking_1_1_client.html">Client</a></li><li class="navelem"><a class="el" href="class_docking_1_1_client_1_1_render.html">Render</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -92,18 +92,75 @@ Inheritance diagram for Docking::Client::Render:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae2f6adfeb6a4920367bad1c0ef0d73d7"><td class="memItemLeft" align="right" valign="top"><a id="ae2f6adfeb6a4920367bad1c0ef0d73d7"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_docking_1_1_client_1_1_render.html#ae2f6adfeb6a4920367bad1c0ef0d73d7">Draw</a> ()=0</td></tr>
-<tr class="memdesc:ae2f6adfeb6a4920367bad1c0ef0d73d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method for drawing elements on window <br /></td></tr>
+<tr class="memitem:ae2f6adfeb6a4920367bad1c0ef0d73d7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_docking_1_1_client_1_1_render.html#ae2f6adfeb6a4920367bad1c0ef0d73d7">Draw</a> ()=0</td></tr>
+<tr class="memdesc:ae2f6adfeb6a4920367bad1c0ef0d73d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method for drawing elements on window  <a href="class_docking_1_1_client_1_1_render.html#ae2f6adfeb6a4920367bad1c0ef0d73d7">More...</a><br /></td></tr>
 <tr class="separator:ae2f6adfeb6a4920367bad1c0ef0d73d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49905afc5716167f1492dff0ce6bfbfd"><td class="memItemLeft" align="right" valign="top"><a id="a49905afc5716167f1492dff0ce6bfbfd"></a>
-virtual sf::RenderWindow &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_docking_1_1_client_1_1_render.html#a49905afc5716167f1492dff0ce6bfbfd">Window</a> ()=0</td></tr>
-<tr class="memdesc:a49905afc5716167f1492dff0ce6bfbfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method, getter of window <br /></td></tr>
+<tr class="memitem:a49905afc5716167f1492dff0ce6bfbfd"><td class="memItemLeft" align="right" valign="top">virtual sf::RenderWindow &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_docking_1_1_client_1_1_render.html#a49905afc5716167f1492dff0ce6bfbfd">Window</a> ()=0</td></tr>
+<tr class="memdesc:a49905afc5716167f1492dff0ce6bfbfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method, getter of window  <a href="class_docking_1_1_client_1_1_render.html#a49905afc5716167f1492dff0ce6bfbfd">More...</a><br /></td></tr>
 <tr class="separator:a49905afc5716167f1492dff0ce6bfbfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_docking_1_1_client_1_1_render.html" title="Render abstact class, parent of all renders.">Render</a> abstact class, parent of all renders. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae2f6adfeb6a4920367bad1c0ef0d73d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2f6adfeb6a4920367bad1c0ef0d73d7">&#9670;&nbsp;</a></span>Draw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Docking::Client::Render::Draw </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>pure virtual method for drawing elements on window </p>
+
+<p>Implemented in <a class="el" href="class_docking_1_1_client_1_1_sign_render.html#a6659af7108b9fe678c79c571ec29df9b">Docking::Client::SignRender</a>, <a class="el" href="class_docking_1_1_client_1_1_menu_render.html#a2c98125056bbaf46be0212f2f4f58dd0">Docking::Client::MenuRender</a>, <a class="el" href="class_docking_1_1_client_1_1_leaders_render.html#abfeae004a5bd9851dd570fc76509dddf">Docking::Client::LeadersRender</a>, and <a class="el" href="class_docking_1_1_client_1_1_game_render.html#a441340f89dd4708158a2ce98bea6a75b">Docking::Client::GameRender</a>.</p>
+
+</div>
+</div>
+<a id="a49905afc5716167f1492dff0ce6bfbfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49905afc5716167f1492dff0ce6bfbfd">&#9670;&nbsp;</a></span>Window()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual sf::RenderWindow&amp; Docking::Client::Render::Window </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>pure virtual method, getter of window </p>
+
+<p>Implemented in <a class="el" href="class_docking_1_1_client_1_1_sign_render.html#af40fd57ac5bf8f7c8260281544bc3e9c">Docking::Client::SignRender</a>, <a class="el" href="class_docking_1_1_client_1_1_menu_render.html#a9953cddef5bf4dd58a2925ba2f104ed2">Docking::Client::MenuRender</a>, <a class="el" href="class_docking_1_1_client_1_1_leaders_render.html#adf581cf743f0b1676239ebbe4dae935e">Docking::Client::LeadersRender</a>, and <a class="el" href="class_docking_1_1_client_1_1_game_render.html#adcb03f87f16baac8f32851096caa1805">Docking::Client::GameRender</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>C:/Users/yegor/Documents/GitHub/OOP_Labs_4_semester/Lab1UML/Client/<a class="el" href="_render_8h_source.html">Render.h</a></li>
 </ul>
 </div><!-- contents -->

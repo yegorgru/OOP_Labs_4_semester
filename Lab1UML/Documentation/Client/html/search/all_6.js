@@ -1,9 +1,5 @@
 var searchData=
 [
-  ['leaderscontroller_40',['LeadersController',['../class_docking_1_1_client_1_1_leaders_controller.html',1,'Docking::Client']]],
-  ['leaderscontroller_2ecpp_41',['LeadersController.cpp',['../_leaders_controller_8cpp.html',1,'']]],
-  ['leaderscontroller_2eh_42',['LeadersController.h',['../_leaders_controller_8h.html',1,'']]],
-  ['leadersrender_43',['LeadersRender',['../class_docking_1_1_client_1_1_leaders_render.html',1,'Docking::Client']]],
-  ['leadersrender_2ecpp_44',['LeadersRender.cpp',['../_leaders_render_8cpp.html',1,'']]],
-  ['leadersrender_2eh_45',['LeadersRender.h',['../_leaders_render_8h.html',1,'']]]
+  ['incorrectname_49',['IncorrectName',['../class_docking_1_1_client_1_1_leaders_render.html#a45d014e1d3cbaa017e5dd05d53b46c5e',1,'Docking::Client::LeadersRender']]],
+  ['incorrectsign_50',['IncorrectSign',['../class_docking_1_1_client_1_1_sign_render.html#a66ef3e8d5c70cad4303e6e2f838448eb',1,'Docking::Client::SignRender']]]
 ];

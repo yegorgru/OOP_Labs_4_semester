@@ -130,6 +130,10 @@ public:
     }
 
 protected:
+
+    /**
+    \brief default constructor
+    */
     Singleton() = default;
 
     static inline T* s_Instance = nullptr;     ///<pointer to object, nullptr when created

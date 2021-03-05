@@ -2,7 +2,7 @@
 \file
 \brief .h file of class NetworkManager
 
-definition of NetworkManager clas
+definition of NetworkManager class
 */
 
 #pragma once

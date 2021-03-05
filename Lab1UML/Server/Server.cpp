@@ -1,3 +1,10 @@
+/**
+\file
+\brief .cpp file of class Server
+
+implementation of Server class
+*/
+
 #include "Server.h"
 
 #include <fstream>

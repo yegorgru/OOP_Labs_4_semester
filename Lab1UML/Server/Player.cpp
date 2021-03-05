@@ -1,10 +1,18 @@
+/**
+\file
+\brief .cpp file of class Player
+
+implementation of Player class
+*/
+
 #include "Player.h"
 
 namespace Docking::Server {
     Player::Player(int id, sf::TcpSocket& socket) :
         m_Id(id),
         m_Socket(socket),
-        m_Game(-1) {}
+        m_Game(-1),
+		m_Wins(0){}
 
     int Player::GetId() const {
         return m_Id;

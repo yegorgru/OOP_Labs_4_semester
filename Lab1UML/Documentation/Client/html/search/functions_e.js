@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['_7enoncopyable_207',['~NonCopyable',['../class_non_copyable.html#a143ae2a73c598b07b1c3dcbd22514027',1,'NonCopyable']]],
-  ['_7enonmoveable_208',['~NonMoveable',['../class_non_moveable.html#a351e9a146fcacae313e6ffb9cdf33c66',1,'NonMoveable']]]
+  ['window_287',['Window',['../class_docking_1_1_client_1_1_game_render.html#adcb03f87f16baac8f32851096caa1805',1,'Docking::Client::GameRender::Window()'],['../class_docking_1_1_client_1_1_leaders_render.html#adf581cf743f0b1676239ebbe4dae935e',1,'Docking::Client::LeadersRender::Window()'],['../class_docking_1_1_client_1_1_menu_render.html#a9953cddef5bf4dd58a2925ba2f104ed2',1,'Docking::Client::MenuRender::Window()'],['../class_docking_1_1_client_1_1_render.html#a49905afc5716167f1492dff0ce6bfbfd',1,'Docking::Client::Render::Window()'],['../class_docking_1_1_client_1_1_sign_render.html#af40fd57ac5bf8f7c8260281544bc3e9c',1,'Docking::Client::SignRender::Window()']]]
 ];

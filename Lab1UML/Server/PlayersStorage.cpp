@@ -1,3 +1,10 @@
+/**
+\file
+\brief .cpp file of class PlayersStorage
+
+implementation of PlayersStorage class
+*/
+
 #include "PlayersStorage.h"
 
 #include <fstream>
@@ -57,7 +64,7 @@ void Docking::Server::PlayersStorage::SignOut(const std::string& name)
     m_OnlinePlayers.erase(name);
 }
 
-void Docking::Server::PlayersStorage::Win(const std::string name) {
+void Docking::Server::PlayersStorage::Win(const std::string& name) {
     int wins = m_PlayersWins.at(name);
     m_PlayersWins[name] = wins+1;
     auto it = m_WinsPlayers.find(wins);

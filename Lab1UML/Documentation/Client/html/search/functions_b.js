@@ -1,12 +1,6 @@
 var searchData=
 [
-  ['send_196',['Send',['../class_docking_1_1_client_1_1_network_manager.html#ae9d592d5b8fdd111e3199d3b30678dcb',1,'Docking::Client::NetworkManager']]],
-  ['setblocking_197',['SetBlocking',['../class_docking_1_1_client_1_1_network_manager.html#a7ab2492e451cab1f9a7f7a0c0286caba',1,'Docking::Client::NetworkManager']]],
-  ['setelement_198',['SetElement',['../class_docking_1_1_client_1_1_game_model.html#a649c617e3f19b73c6a602c2c1c44ce36',1,'Docking::Client::GameModel']]],
-  ['setendtext_199',['SetEndText',['../class_docking_1_1_client_1_1_game_render.html#a13aceac84a9aa36f4d1ff880f03ee998',1,'Docking::Client::GameRender']]],
-  ['setfocus_200',['SetFocus',['../class_docking_1_1_client_1_1_sign_render.html#a51437d48ea96ccb005295754e5468033',1,'Docking::Client::SignRender']]],
-  ['setname_201',['SetName',['../class_docking_1_1_client_1_1_player.html#ab6cd19e7c10d8ea3ac542121b78f95f8',1,'Docking::Client::Player']]],
-  ['setplayer_202',['SetPlayer',['../class_docking_1_1_client_1_1_leaders_render.html#aba6e5328b620d14b752cb56eb39acd34',1,'Docking::Client::LeadersRender']]],
-  ['setwinner_203',['SetWinner',['../class_docking_1_1_client_1_1_game_model.html#a0d0faa9c1ae60ee9bc9587b0b449152e',1,'Docking::Client::GameModel']]],
-  ['setwins_204',['SetWins',['../class_docking_1_1_client_1_1_player.html#a712204f7ffc8ff3b40ed8e29996dfc55',1,'Docking::Client::Player']]]
+  ['receive_271',['Receive',['../class_docking_1_1_client_1_1_network_manager.html#af472632c2c5427444188968bdacacd67',1,'Docking::Client::NetworkManager']]],
+  ['restore_272',['Restore',['../class_docking_1_1_client_1_1_game_controller.html#a34bde2639e1d9db45818b1a6765650a9',1,'Docking::Client::GameController::Restore()'],['../class_docking_1_1_client_1_1_game_model.html#a2577876a95724c4c4339d2f8a0d66e59',1,'Docking::Client::GameModel::Restore()'],['../class_docking_1_1_client_1_1_game_render.html#a7dce8f759e70e87a1dabdbaa51133e2a',1,'Docking::Client::GameRender::Restore()'],['../class_docking_1_1_client_1_1_leaders_render.html#aa63c6fc21b191d2f47c93332a42fbf7e',1,'Docking::Client::LeadersRender::Restore()']]],
+  ['run_273',['Run',['../class_docking_1_1_client_1_1_client_controller.html#abfe92ac27f496bbcd9621fe7f33088f6',1,'Docking::Client::ClientController::Run()'],['../class_docking_1_1_client_1_1_controller.html#a60fa68f212d7fd6df9542480386eb780',1,'Docking::Client::Controller::Run()'],['../class_docking_1_1_client_1_1_game_controller.html#a1e1a815a603088e483dbf0a3cba9f6bd',1,'Docking::Client::GameController::Run()'],['../class_docking_1_1_client_1_1_leaders_controller.html#abbbb21db18524601c909fc149bbf0ecd',1,'Docking::Client::LeadersController::Run()'],['../class_docking_1_1_client_1_1_menu_controller.html#a8b2010ffd1ab7117d9216bc921555d75',1,'Docking::Client::MenuController::Run()'],['../class_docking_1_1_client_1_1_sign_controller.html#a67664558a65bf091c90326a1ed7bfdc3',1,'Docking::Client::SignController::Run() override'],['../class_docking_1_1_client_1_1_sign_controller.html#a666fd700246f1b62b6bbcca42b57cb69',1,'Docking::Client::SignController::Run(Player &amp;player)']]]
 ];

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['main_187',['main',['../main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main.cpp']]]
+  ['leaderscontroller_259',['LeadersController',['../class_docking_1_1_client_1_1_leaders_controller.html#a76ef649c69c08a615cc6383442f3e1b7',1,'Docking::Client::LeadersController']]],
+  ['leadersrender_260',['LeadersRender',['../class_docking_1_1_client_1_1_leaders_render.html#a1f4c29a8a1463b9650282fa5bff741c2',1,'Docking::Client::LeadersRender']]]
 ];

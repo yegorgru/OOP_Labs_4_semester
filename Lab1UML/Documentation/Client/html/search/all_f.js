@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['_7enoncopyable_104',['~NonCopyable',['../class_non_copyable.html#a143ae2a73c598b07b1c3dcbd22514027',1,'NonCopyable']]],
-  ['_7enonmoveable_105',['~NonMoveable',['../class_non_moveable.html#a351e9a146fcacae313e6ffb9cdf33c66',1,'NonMoveable']]]
+  ['up_164',['Up',['../namespace_docking_1_1_client.html#a90b7629b70623341ed27ca0e2e71ffbca258f49887ef8d14ac268c92b02503aaa',1,'Docking::Client']]]
 ];

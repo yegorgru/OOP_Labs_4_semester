@@ -1,3 +1,10 @@
+/**
+\file
+\brief .cpp file of class Game
+
+implementation of Game class
+*/
+
 #include "Game.h"
 
 namespace Docking::Server {
