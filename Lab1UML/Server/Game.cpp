@@ -92,6 +92,10 @@ namespace Docking::Server {
 		m_Position = { x,y };
 	}
 
+	void Game::SetElement(int element, Position pos) {
+		m_Map[pos.x][pos.y] = element;
+	}
+
 	int Game::GetWinnerId() const	{
 		return m_ElementId.at(m_Winner);
 	}
@@ -358,7 +362,7 @@ namespace Docking::Server {
 		}
 		return false;
 	}
-
+	
 	bool Game::IsCorrectMove(int direction)
 	{
 		if (m_Position.x != -1) {

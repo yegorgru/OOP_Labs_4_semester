@@ -99,7 +99,7 @@ namespace Docking::Client {
 			if (m_Password.size() > 0) {
 				m_Password.resize(m_Password.size() - 1);
 			}
-			m_TextPassword.setString('*'*m_Password.size());
+			m_TextPassword.setString(std::string(m_Password.size(),'*'));
 		}
 	}
 

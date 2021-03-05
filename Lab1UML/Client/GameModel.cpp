@@ -7,7 +7,6 @@ namespace Docking::Client {
 
 	void GameModel::Restore()
 	{
-		m_Winner = 0;
 		for (size_t i = 0; i < 8; i++) {
 			for (size_t j = 0; j < 8; j++)
 			{

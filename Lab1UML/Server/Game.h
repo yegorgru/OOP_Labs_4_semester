@@ -30,6 +30,8 @@ namespace Docking::Server {
 
         void SetPosition(int x, int y);
 
+        void SetElement(int element, Position pos);
+
         int GetWinnerId() const;
         std::string GetWinnerName() const;
 
@@ -40,6 +42,7 @@ namespace Docking::Server {
         void MakeMove(int direction);
 
         bool IsEnd();
+        bool CheckClosed(Position pos);
         
         bool IsActive() const;
 
@@ -55,8 +58,6 @@ namespace Docking::Server {
     private:
 
         void CheckElements(Position pos, int el, std::set<std::pair<int, int>>& elements);
-
-        bool CheckClosed(Position pos);
 
         bool IsCorrectMove(int direction);
 

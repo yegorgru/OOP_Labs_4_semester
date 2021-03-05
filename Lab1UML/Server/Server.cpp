@@ -18,7 +18,7 @@ namespace Docking::Server {
         m_Listener.listen(m_Port);
         m_Selector.add(m_Listener);
 
-        m_Games.emplace(0,Game(m_NetworkManager));
+        m_Games.emplace(0,Game());
     }
 
     void Server::Run() {
@@ -58,7 +58,7 @@ namespace Docking::Server {
                                     m_Games.at(m_UncompletedGame).StartGame();
                                     std::cout << "Game #" << m_UncompletedGame << " started!" << std::endl;
                                     m_UncompletedGame++;
-                                    m_Games.emplace(m_UncompletedGame,Game(m_NetworkManager));
+                                    m_Games.emplace(m_UncompletedGame,Game());
                                 }
                                 break;
                             }

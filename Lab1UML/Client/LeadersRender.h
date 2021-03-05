@@ -19,10 +19,10 @@ namespace Docking::Client {
 
 		void AddLetter(char letter);
 		void EraseLetter();
-		std::string GetName();
+		std::string GetName() const;
 		void IncorrectName();
 
-		void SetPlayer(Player player);
+		void SetPlayer(const Player& player);
 		void AddLeader(const Player& player);
 	private:
 		LeadersRender(sf::RenderWindow& window);

@@ -60,7 +60,7 @@ namespace Docking::Client {
 		m_TextLeaders.setFillColor(sf::Color::Black);
 	}
 
-	void LeadersRender::SetPlayer(Player player)
+	void LeadersRender::SetPlayer(const Player& player)
 	{
 		m_Player = player;
 		m_TextName.setString(player.GetName());
@@ -88,7 +88,7 @@ namespace Docking::Client {
 		m_TextName.setString(str);
 	}
 
-	std::string LeadersRender::GetName()
+	std::string LeadersRender::GetName() const
 	{
 		return m_TextName.getString();
 	}
