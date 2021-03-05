@@ -1,3 +1,10 @@
+/**
+\file
+\brief .cpp file of class MenuController
+
+implementation of MenuController class
+*/
+
 #include "MenuController.h"
 
 namespace Docking::Client {

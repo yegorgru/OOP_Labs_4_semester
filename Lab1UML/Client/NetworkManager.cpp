@@ -1,3 +1,10 @@
+/**
+\file
+\brief .cpp file of class NetworkManager
+
+implementation of NetworkManager class
+*/
+
 #include "NetworkManager.h"
 
 namespace Docking::Client {

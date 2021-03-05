@@ -1,3 +1,10 @@
+/**
+\file
+\brief .cpp file of class GameController
+
+implementation of GameController class
+*/
+
 #include "GameController.h"
 
 #include <SFML/Network.hpp>

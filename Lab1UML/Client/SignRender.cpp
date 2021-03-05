@@ -1,3 +1,10 @@
+/**
+\file
+\brief .cpp file of class SignRender
+
+implementation of SignRender class
+*/
+
 #include "SignRender.h"
 #include "Assets.h"
 
@@ -87,6 +94,7 @@ namespace Docking::Client {
 			}
 		}
 	}
+
 	void SignRender::EraseLetter() {
 		if (!m_Focus) {
 			std::string str(m_TextName.getString());
@@ -111,7 +119,7 @@ namespace Docking::Client {
 		return m_Password;
 	}
 
-	void SignRender::IncorrectLog() {
+	void SignRender::IncorrectSign() {
 		m_RectangleName.setOutlineColor(sf::Color::Red);
 		m_RectanglePassword.setOutlineColor(sf::Color::Red);
 		m_RectangleName.setOutlineThickness(5);

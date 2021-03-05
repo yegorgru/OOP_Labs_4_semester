@@ -1,3 +1,10 @@
+/**
+\file
+\brief .cpp file of class SignController
+
+implementation of SignController class
+*/
+
 #include "SignController.h"
 
 #include <SFML/Graphics.hpp>
@@ -78,7 +85,7 @@ namespace Docking::Client {
 					return Code::Menu;
 				}
 				case ServerCode::NotConfirm: {
-					m_Render.IncorrectLog();
+					m_Render.IncorrectSign();
 				}
 				}
 			}

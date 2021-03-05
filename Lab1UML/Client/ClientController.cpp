@@ -1,3 +1,10 @@
+/**
+\file
+\brief .cpp file of class ClientController
+
+implementation of ClientController class
+*/
+
 #include <SFML/Network.hpp>
 
 #include "ClientController.h"

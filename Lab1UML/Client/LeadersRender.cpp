@@ -1,3 +1,10 @@
+/**
+\file
+\brief .cpp file of class LeadersRender
+
+implementation of LeadersRender class
+*/
+
 #include "LeadersRender.h"
 #include "Assets.h"
 

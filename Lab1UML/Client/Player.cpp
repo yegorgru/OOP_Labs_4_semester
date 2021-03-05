@@ -1,3 +1,10 @@
+/**
+\file
+\brief .cpp file of class Player
+
+implementation of Player class
+*/
+
 #include "Player.h"
 
 

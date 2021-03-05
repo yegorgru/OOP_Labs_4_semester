@@ -1,3 +1,10 @@
+/**
+\file
+\brief main file
+
+entry point, unit tests
+*/
+
 #include "GameModel.h"
 #include "ClientController.h"
 #include "GameRender.h"
@@ -11,14 +18,27 @@
 
 #include <fstream>
 
+/**
+   macros to launch unit tests in existing entry point
+ */
 #define DOCTEST_CONFIG_IMPLEMENT
 
+ /**
+    unit tests (if macros is defined)
+ */
 #ifdef DOCTEST_CONFIG_IMPLEMENT
 #include "doctest.h"
 #include <random>
+
+ /**
+    random device mersenne
+ */
 std::random_device rd;
 std::mt19937 mersenne(rd());
 
+/**
+   testing game model
+*/
 TEST_CASE("testing game model") {
     using namespace Docking::Client;
     GameModel& model = GameModel::Get();
@@ -45,6 +65,9 @@ TEST_CASE("testing game model") {
     model.Restore();
 }
 
+/**
+   testing leaders render
+*/
 TEST_CASE("testing leaders render") {
     using namespace Docking::Client;
     LeadersRender& render = LeadersRender::Get();
@@ -81,6 +104,9 @@ TEST_CASE("testing leaders render") {
     render.Restore();
 }
 
+/**
+   testing player
+*/
 TEST_CASE("testing player") {
     Docking::Client::Player player("abc", 20);
     CHECK(player.GetName() == "abc");
@@ -91,6 +117,9 @@ TEST_CASE("testing player") {
     CHECK(player.GetWins() == 21);
 }
 
+/**
+   testing sign render
+*/
 TEST_CASE("testing sign render") {
     Docking::Client::SignRender& render = Docking::Client::SignRender::Get();
     render.SetFocus(false);
@@ -143,6 +172,11 @@ TEST_CASE("testing sign render") {
 }
 #endif
 
+/**
+   \brief entry point
+
+   runs unit tests and launch client application
+*/
 int main(){
     using namespace Docking::Client;
     sf::RenderWindow window(sf::VideoMode(640, 690), "Docking", sf::Style::Titlebar | sf::Style::Close);

@@ -1,3 +1,10 @@
+/**
+\file
+\brief .cpp file of class GameRender
+
+implementation of GameRender class
+*/
+
 #include "GameRender.h"
 #include "Assets.h"
 

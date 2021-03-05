@@ -1,3 +1,10 @@
+/**
+\file
+\brief .cpp file of class Assets
+
+implementation of Assets class
+*/
+
 #include "Assets.h"
 
 namespace Docking::Client{

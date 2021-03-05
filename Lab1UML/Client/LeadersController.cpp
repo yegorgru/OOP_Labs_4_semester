@@ -1,3 +1,10 @@
+/**
+\file
+\brief .cpp file of class LeadersController
+
+implementation of LeadersController class
+*/
+
 #include "LeadersController.h"
 
 #include <SFML/Graphics.hpp>

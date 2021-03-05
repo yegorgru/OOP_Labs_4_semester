@@ -1,9 +1,16 @@
+/**
+\file
+\brief .cpp file of class GameModel
+
+implementation of GameModel class
+*/
+
 #include "GameModel.h"
 
 namespace Docking::Client {
 	GameModel::GameModel():
 		m_Map(),
-		m_Winner(){}
+		m_Winner(0) {}
 
 	void GameModel::Restore()
 	{

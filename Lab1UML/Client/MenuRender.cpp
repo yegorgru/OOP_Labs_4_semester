@@ -1,3 +1,10 @@
+/**
+\file
+\brief .cpp file of class MenuRender
+
+implementation of MenuRender class
+*/
+
 #include "MenuRender.h"
 #include "Assets.h"
 
