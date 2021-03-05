@@ -10,14 +10,14 @@ definition of Assets class
 #include <SFML/Graphics.hpp>
 #include "Singleton.h"
 
-/**
-\brief class for storing assets
-
-Singleton<Assets> inheritant
-has information about font
-*/
-
 namespace Docking::Client {
+
+	/**
+	\brief class for storing assets
+
+	Singleton<Assets> inheritant
+	has information about font
+	*/
 	class Assets : public Singleton<Assets>
 	{
 	public:
