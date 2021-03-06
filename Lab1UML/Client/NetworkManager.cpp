@@ -37,4 +37,4 @@ namespace Docking::Client {
     void NetworkManager::SetBlocking(bool value) {
         m_Connection.setBlocking(value);
     }
-} // namespace Catan::Client
+}
