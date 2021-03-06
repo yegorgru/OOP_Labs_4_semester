@@ -24,7 +24,6 @@ namespace Docking::Client {
             return true;
         }
 
-        //throw std::runtime_error("Catan::Client::NetworkManager::Receive: Don't receive packet!");
         return false;
     }
 
